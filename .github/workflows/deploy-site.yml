@@ -1,0 +1,18 @@
+name: Deploy Landing Page to Netlify
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'netlify.toml'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Netlify
+        run: |
+          npx netlify-cli deploy --prod --dir=site \
+            --site=c34466f7-a0f9-4a4c-bed8-402a966ae56b
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
