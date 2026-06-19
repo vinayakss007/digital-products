@@ -1,0 +1,8 @@
+Lead ID,Company Name,Contact Name,Email,Phone,Source,Stage,Deal Value (₹),Probability (%),Expected Value (₹),Tags,Notes,Assigned To,Created Date,Last Contacted,Next Follow-Up,Status
+L001,Acme Corp,Rahul Sharma,rahul@acme.com,+91-9876543210,LinkedIn,Cold,50000,10,5000,SaaS,Met at conference,Self,2026-06-01,2026-06-01,2026-06-04,Active
+L002,Beta Tech, Priya Patel,priya@beta.com,+91-9876543211,Referral,Contacted,75000,20,15000,Enterprise,Friend referral,Self,2026-05-28,2026-06-02,2026-06-05,Active
+L003,Gamma Solutions,Amit Singh,amit@gamma.com,+91-9876543212,Website,Qualified,120000,40,48000,Contract,Has budget approved,Self,2026-05-25,2026-06-03,2026-06-06,Active
+L004,Delta Corp,Sneha Reddy,sneha@delta.com,+91-9876543213,Cold Email,Proposal,200000,60,120000,Enterprise,Waiting for board approval,Self,2026-05-20,2026-06-04,2026-06-08,Negotiating
+L005,Epsilon Inc,Vikram Joshi,vikram@epsilon.com,+91-9876543214,LinkedIn,Negotiation,300000,80,240000,SaaS,Contract draft sent,Self,2026-05-15,2026-06-05,2026-06-07,Negotiating
+L006,Zeta Ltd,Ananya Gupta,ananya@zeta.com,+91-9876543215,Referral,Closed Won,150000,100,150000,Retail,Payment received — deploy in progress,Self,2026-04-10,2026-06-01,N/A,Won
+L007,Eta Services,Deepak Verma,deepak@eta.com,+91-9876543216,Cold Email,Closed Lost,40000,0,0,SMB,Went with competitor,Self,2026-05-01,2026-05-15,N/A,Lost
