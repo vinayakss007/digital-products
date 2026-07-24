@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import openai
 import os
 import subprocess
+import urllib.parse
+import re
 
 def scrape_news():
     url = "https://news.ycombinator.com/"
@@ -18,6 +20,19 @@ def scrape_news():
             'url': link['href']
         })
     return news_items
+
+def get_image_from_url(url):
+    try:
+        if not url.startswith('http'):
+            return None
+        response = requests.get(url, timeout=5)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        og_image = soup.find('meta', property='og:image')
+        if og_image and og_image.get('content'):
+            return og_image['content']
+    except Exception as e:
+        print(f"Could not extract image from {url}: {e}")
+    return None
 
 def generate_article(title, url):
     api_key = os.environ.get("OPENAI_API_KEY")
@@ -47,22 +62,54 @@ def generate_article(title, url):
         print(f"Error generating article: {e}")
         return None
 
-def publish_to_cms(article_title, article_content):
+def download_image(url, filename):
     try:
-        # Use Docker WP-CLI to create the post
+        response = requests.get(url, stream=True, timeout=5)
+        response.raise_for_status()
+        with open(filename, 'wb') as f:
+            for chunk in response.iter_content(1024):
+                f.write(chunk)
+        return True
+    except Exception as e:
+        print(f"Failed to download image {url}: {e}")
+        return False
+
+def publish_to_cms(article_title, article_content, image_url=None):
+    try:
         cmd = [
-            "docker-compose", "run", "--rm", "wpcli", "wp", "post", "create",
+            "wp", "--path=./wordpress", "post", "create",
             f"--post_title={article_title}",
             f"--post_content={article_content}",
-            "--post_status=publish"
+            "--post_status=publish",
+            "--porcelain"
         ]
-        # Note: If running locally without docker, replace with native wp-cli command:
-        # cmd = ["wp", "post", "create", "--path=/path/to/wordpress", f"--post_title={article_title}", f"--post_content={article_content}", "--post_status=publish"]
 
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        print(f"Successfully published: {article_title}")
+        post_id = result.stdout.strip()
+        print(f"Successfully published: {article_title} with ID {post_id}")
+
+        if image_url:
+            safe_title = re.sub(r'[^a-zA-Z0-9]', '_', article_title)[:20]
+            image_filename = f"/tmp/{safe_title}.jpg"
+            if download_image(image_url, image_filename):
+                attach_image_to_post(post_id, image_filename)
+        return True
     except subprocess.CalledProcessError as e:
         print(f"Failed to publish '{article_title}': {e.stderr}")
+        return False
+
+def attach_image_to_post(post_id, image_path):
+    try:
+        cmd = [
+            "wp", "--path=./wordpress", "media", "import", image_path,
+            f"--post_id={post_id}", "--featured_image"
+        ]
+
+        subprocess.run(cmd, capture_output=True, text=True, check=True)
+        print(f"Successfully attached image to post {post_id}")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to attach image to post {post_id}: {e.stderr}")
+
 
 if __name__ == "__main__":
     print("Scraping Hacker News...")
@@ -73,7 +120,8 @@ if __name__ == "__main__":
         article = generate_article(item['title'], item['url'])
 
         if article:
-            publish_to_cms(article['title'], article['content'])
+            image_url = get_image_from_url(item['url'])
+            publish_to_cms(article['title'], article['content'], image_url)
         else:
             print("Failed to generate article.")
 
