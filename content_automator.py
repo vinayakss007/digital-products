@@ -34,26 +34,55 @@ def get_image_from_url(url):
         print(f"Could not extract image from {url}: {e}")
     return None
 
-def generate_article(title, url):
+def generate_article(title, url, article_type="news"):
     api_key = os.environ.get("OPENAI_API_KEY")
+
+    if article_type == "review":
+        prompt_system = "You are a tech product reviewer. Write an engaging product review based on the provided topic, similar in style to TechRadar. Start with a compelling headline on the first line, followed by the review content. Conclude with a strong buying recommendation. Do not include markdown formatting for the title."
+        prompt_user = f"Topic: {title}\nPlease generate the review."
+    elif article_type == "ebook":
+        prompt_system = "You are a tech author and marketer. Write an engaging promotional post for a new tech-related ebook based on the provided topic. Start with a catchy headline on the first line, followed by the promotional content, outlining what readers will learn. Do not include markdown formatting for the title."
+        prompt_user = f"Topic: {title}\nPlease generate the ebook promotional post."
+    else:
+        prompt_system = "You are a tech journalist. Rewrite the provided tech news headline into a full, engaging article for a tech blog, similar in style to TechRadar. Start with a compelling headline on the first line, followed by the article content. Do not include markdown formatting for the title."
+        prompt_user = f"Headline: {title}\nURL: {url}\nPlease generate the article."
+
     if not api_key:
-        return {
-            "title": f"Breaking: {title}",
-            "content": f"This is an automated engaging tech article based on the recent news about '{title}'. It is a very exciting development in the tech world. Read more at the original source: {url}"
-        }
+        if article_type == "review":
+            return {
+                "title": f"Review: {title}",
+                "content": f"This is an automated engaging tech review based on '{title}'. It is a very exciting product. <br><br> <strong><a href='http://affiliatelink.com/buy/{urllib.parse.quote(title)}'>Buy Now on Amazon!</a></strong>"
+            }
+        elif article_type == "ebook":
+            return {
+                "title": f"Ebook: Mastering {title}",
+                "content": f"This is an automated engaging promotional post for our new ebook about '{title}'. You will learn a lot! <br><br> <strong><a href='http://affiliatelink.com/buy/ebook'>Get the Ebook Now!</a></strong>"
+            }
+        else:
+            return {
+                "title": f"Breaking: {title}",
+                "content": f"This is an automated engaging tech article based on the recent news about '{title}'. It is a very exciting development in the tech world. Read more at the original source: {url}"
+            }
 
     client = openai.OpenAI(api_key=api_key)
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a tech journalist. Rewrite the provided tech news headline into a full, engaging article for a tech blog, similar in style to TechRadar. Start with a compelling headline on the first line, followed by the article content. Do not include markdown formatting for the title."},
-                {"role": "user", "content": f"Headline: {title}\nURL: {url}\nPlease generate the article."}
+                {"role": "system", "content": prompt_system},
+                {"role": "user", "content": prompt_user}
             ]
         )
         result = response.choices[0].message.content.strip().split('\n', 1)
         generated_title = result[0].strip()
         generated_content = result[1].strip() if len(result) > 1 else ""
+
+        # Add affiliate placeholders
+        if article_type == "review":
+            generated_content += f"\n\n<br><br><strong><a href='http://affiliatelink.com/buy/{urllib.parse.quote(title)}'>Buy Now on Amazon!</a></strong>"
+        elif article_type == "ebook":
+            generated_content += f"\n\n<br><br><strong><a href='http://affiliatelink.com/buy/ebook'>Get the Ebook Now!</a></strong>"
+
         return {
             "title": generated_title,
             "content": generated_content
@@ -77,7 +106,7 @@ def download_image(url, filename):
 def publish_to_cms(article_title, article_content, image_url=None):
     try:
         cmd = [
-            "wp", "--path=./wordpress", "post", "create",
+            "./wp-cli.phar", "--path=./wordpress", "post", "create",
             f"--post_title={article_title}",
             f"--post_content={article_content}",
             "--post_status=publish",
@@ -97,11 +126,14 @@ def publish_to_cms(article_title, article_content, image_url=None):
     except subprocess.CalledProcessError as e:
         print(f"Failed to publish '{article_title}': {e.stderr}")
         return False
+    except FileNotFoundError:
+        print("Failed to run WP-CLI. Make sure ./wp-cli.phar is available (run setup.sh first).")
+        return False
 
 def attach_image_to_post(post_id, image_path):
     try:
         cmd = [
-            "wp", "--path=./wordpress", "media", "import", image_path,
+            "./wp-cli.phar", "--path=./wordpress", "media", "import", image_path,
             f"--post_id={post_id}", "--featured_image"
         ]
 
@@ -115,14 +147,33 @@ if __name__ == "__main__":
     print("Scraping Hacker News...")
     news_items = scrape_news()
 
-    for item in news_items:
-        print(f"Generating article for: {item['title']}")
-        article = generate_article(item['title'], item['url'])
-
+    # Generate News
+    print("\n--- Generating News ---")
+    for item in news_items[:3]:
+        print(f"Generating news for: {item['title']}")
+        article = generate_article(item['title'], item['url'], "news")
         if article:
             image_url = get_image_from_url(item['url'])
             publish_to_cms(article['title'], article['content'], image_url)
-        else:
-            print("Failed to generate article.")
 
-    print("Automation complete.")
+    # Generate Review
+    print("\n--- Generating Review ---")
+    if len(news_items) > 3:
+        item = news_items[3]
+        print(f"Generating review for: {item['title']}")
+        article = generate_article(item['title'], item['url'], "review")
+        if article:
+            image_url = get_image_from_url(item['url'])
+            publish_to_cms(article['title'], article['content'], image_url)
+
+    # Generate Ebook
+    print("\n--- Generating Ebook Promo ---")
+    if len(news_items) > 4:
+        item = news_items[4]
+        print(f"Generating ebook promo for: {item['title']}")
+        article = generate_article(item['title'], item['url'], "ebook")
+        if article:
+            image_url = get_image_from_url(item['url'])
+            publish_to_cms(article['title'], article['content'], image_url)
+
+    print("\nAutomation complete.")

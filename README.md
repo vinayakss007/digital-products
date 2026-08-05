@@ -10,38 +10,38 @@ This project is a centralized, automated tech news and product website using Wor
 
 ## Prerequisites
 
-- Docker and Docker Compose
+- PHP 8.x
 - Python 3
 - Required Python packages: `requests`, `beautifulsoup4`, `openai`
+- `curl`, `unzip`
 
-## Installation
+## Installation & Setup
 
-1. Start the WordPress environment using Docker Compose:
+We provide an automated setup script that downloads and configures WordPress locally with SQLite (no separate MySQL database needed), installs a custom theme, and prepares everything.
+
+1. Run the setup script:
    ```bash
-   docker-compose up -d
+   ./setup.sh
    ```
-   *Note: Ensure your environment supports Docker's OverlayFS without permission restrictions. The WordPress site will be available at `http://localhost:8000`.*
 
-2. Install Python dependencies for the automation script:
+2. Start the local PHP development server:
+   ```bash
+   cd wordpress
+   php -S 0.0.0.0:8000
+   ```
+   *The WordPress site will be available at `http://localhost:8000`.*
+
+3. Install Python dependencies for the automation script:
    ```bash
    pip install requests beautifulsoup4 openai
    ```
 
-## Setup WordPress Theme & Auth
-
-Use the `wpcli` container to install the core and activate the custom theme:
-
-```bash
-docker-compose run --rm wpcli wp core install --url="http://localhost:8000" --title="Tech Passive Income" --admin_user="admin" --admin_password="password" --admin_email="admin@example.com"
-docker-compose run --rm wpcli wp theme activate tech-passive-income-theme
-```
-
 ## Running the Content Automator
 
-The `content_automator.py` script pulls trending stories from Hacker News and generates articles.
+The `content_automator.py` script pulls trending stories from Hacker News and generates categorized articles (News, Reviews, Ebooks).
 
 1. Ensure you have your `OPENAI_API_KEY` set as an environment variable (otherwise, it will use a mock fallback response for generating articles).
-2. Modify the script's `publish_to_cms` function to target the container properly using WP-CLI via Docker, or if running locally with WP-CLI installed natively, just ensure the path points to the WordPress root.
+2. The script runs natively and uses `wp-cli.phar` (downloaded during setup) to publish directly to the local WordPress installation.
 3. Run the script:
    ```bash
    python3 content_automator.py

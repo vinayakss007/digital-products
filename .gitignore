@@ -3,3 +3,8 @@ node_modules/
 __pycache__/
 .env*
 wordpress/
+php_server.log
+wp-cli.phar
+sqlite-integration/
+sqlite-integration.1.8.1.zip
+wordpress/

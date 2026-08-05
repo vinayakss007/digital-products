@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechRadar Clone | Automator</title>
+    <meta name="description" content="The best automated tech news, product reviews, and exclusive tech ebooks. Continually updated.">
+    <meta name="keywords" content="Tech, News, Reviews, Ebooks, Artificial Intelligence, Computing">
+    <meta name="author" content="TechRadar Automator">
+    <title>TechPassiveIncome | Auto-Generated Tech Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo get_stylesheet_uri(); ?>">
     <?php wp_head(); ?>
@@ -26,6 +29,16 @@
     </nav>
 
     <div class="container">
+        <!-- Lead Generation / Newsletter Form -->
+        <div style="background-color: #f3f4f6; padding: 20px; text-align: center; margin-bottom: 30px; border-radius: 8px;">
+            <h3>Join our Tech Newsletter</h3>
+            <p>Get the latest AI reviews and exclusive tech ebooks directly in your inbox!</p>
+            <form style="display:flex; justify-content:center; gap: 10px; margin-top: 15px;">
+                <input type="email" placeholder="Enter your email" style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
+                <button type="submit" style="padding: 10px 20px; background-color: #EF4444; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Subscribe</button>
+            </form>
+        </div>
+
         <?php if ( have_posts() ) : ?>
 
             <div class="hero-grid">
