@@ -3,276 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRM & Sales Tracker Template | LeadStack</title>
+  <title>LeadStack — Templates & Tools for Solo Businesses</title>
+  <meta name="description" content="Google Sheets templates and prompt packs that handle sales, invoicing and follow-ups for freelancers and solo founders. One-time price, no subscription.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0a0b;
-      color: #f5f5f7;
-      line-height: 1.6;
-    }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-    /* Hero */
-    .hero {
-      padding: 80px 0 60px;
-      text-align: center;
-      background: linear-gradient(180deg, #0a0a0b 0%, #121214 100%);
-    }
-    .hero-badge {
-      display: inline-block;
-      padding: 6px 16px;
-      border-radius: 100px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-    .hero h1 span { background: linear-gradient(135deg, #6366f1, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p {
-      font-size: 18px;
-      color: #a1a1aa;
-      max-width: 600px;
-      margin: 0 auto 32px;
-    }
-    .price-tag {
-      display: inline-block;
-      padding: 12px 32px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      border-radius: 12px;
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .price-note { color: #71717a; font-size: 14px; margin-bottom: 32px; }
-    .cta {
-      display: inline-block;
-      padding: 16px 40px;
-      background: #fff;
-      color: #0a0a0b;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(99,102,241,0.3); }
-
-    /* Features */
-    .features {
-      padding: 80px 0;
-      background: #121214;
-    }
-    .features h2 {
-      text-align: center;
-      font-size: 32px;
-      margin-bottom: 48px;
-    }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-    .feature-card {
-      padding: 32px;
-      background: #1a1a1e;
-      border-radius: 16px;
-      border: 1px solid #27272a;
-    }
-    .feature-card .icon { font-size: 32px; margin-bottom: 16px; }
-    .feature-card h3 { font-size: 18px; margin-bottom: 8px; }
-    .feature-card p { color: #a1a1aa; font-size: 14px; }
-
-    /* Demo */
-    .demo {
-      padding: 80px 0;
-      background: #0a0a0b;
-    }
-    .demo h2 { text-align: center; font-size: 32px; margin-bottom: 40px; }
-    .demo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-    .demo-card {
-      background: #121214;
-      border: 1px solid #27272a;
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .demo-card pre {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 12px;
-      color: #a1a1aa;
-      overflow-x: auto;
-    }
-    .demo-card .label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #6366f1;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    /* Who */
-    .who {
-      padding: 80px 0;
-      background: #121214;
-    }
-    .who h2 { text-align: center; font-size: 32px; margin-bottom: 40px; }
-    .who-list {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .who-list li {
-      list-style: none;
-      padding: 12px 0;
-      font-size: 16px;
-      border-bottom: 1px solid #27272a;
-    }
-    .who-list li::before { content: "✓ "; color: #6366f1; font-weight: 700; }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 40px;
-      color: #52525b;
-      font-size: 14px;
-      border-top: 1px solid #27272a;
-    }
-    .footer a { color: #6366f1; text-decoration: none; }
-
-    @media (max-width: 640px) {
-      .hero h1 { font-size: 32px; }
-      .price-tag { font-size: 28px; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <section class="hero">
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Lead<span>Stack</span></a>
+      <div class="nav-links">
+        <a href="#products">Products</a>
+        <a href="#bundle">Bundle</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
     <div class="container">
-      <div class="hero-badge">📊 Google Sheets CRM</div>
-      <h1>Your Sales Pipeline.<br><span>5 Minutes. Zero Cost.</span></h1>
-      <p>The CRM template for solo founders, freelancers, and small teams who need to track leads without paying for software.</p>
-      <div class="price-tag">₹299</div>
-      <div class="price-note">Launch price — one-time payment, use forever</div>
-      <br>
-      <a href="#buy" class="cta">Buy Now — Instant Download →</a>
+      <div class="hero-badge">Templates for people who run things alone</div>
+      <h1>You already have the work.<br><em>Stop losing money on the admin.</em></h1>
+      <p>Three tools that cover the loop every solo business repeats: find the lead, do the job, send the invoice. All inside Google Sheets. One-time price.</p>
+      <div class="cta-row">
+        <a href="#products" class="cta">See the products →</a>
+        <a href="#bundle" class="cta ghost">Bundle and save ₹198</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="products">
+    <div class="container">
+      <h2>Pick the one that hurts most today</h2>
+      <p class="sub">Each works alone. No account, no subscription, nothing to install.</p>
+      <div class="grid" data-products></div>
     </div>
   </section>
 
-  <section class="features">
+  <section class="alt">
     <div class="container">
-      <h2>Everything You Need to Close Deals</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="icon">📋</div>
-          <h3>Lead Database</h3>
-          <p>17 columns tracking every detail — company, contact, value, source, stage, tags, notes. Nothing missing.</p>
+      <h2>Why these are different from a free template</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="icon">⚙️</div>
+          <h3>They do something, not just hold rows</h3>
+          <p>A free template is a list with colours. These run scripts: reminders fire, totals recalculate, PDFs appear, dashboards rebuild themselves.</p>
         </div>
-        <div class="feature-card">
-          <div class="icon">📧</div>
-          <h3>Auto Follow-Up Reminders</h3>
-          <p>Daily email alerts when leads need follow-up. Never lose a deal because you forgot to call.</p>
+        <div class="feature">
+          <div class="icon">🧪</div>
+          <h3>Tested before they were sold</h3>
+          <p>Every script ships with an automated test suite covering the money maths, overdue detection, blank rows and bad input. 196 checks pass across the three products on the current build.</p>
         </div>
-        <div class="feature-card">
-          <div class="icon">📊</div>
-          <h3>Revenue Dashboard</h3>
-          <p>Pipeline value, avg deal size, conversion rate — auto-calculated KPIs updated with one click.</p>
+        <div class="feature">
+          <div class="icon">🔓</div>
+          <h3>Yours to change</h3>
+          <p>No obfuscated add-on, no lock-in. Open the script, rename the stages, add a column, change the currency symbol. It is plain code with comments.</p>
         </div>
-        <div class="feature-card">
-          <div class="icon">🔄</div>
-          <h3>Pipeline Stages</h3>
-          <p>Cold → Contacted → Qualified → Proposal → Negotiation → Closed. Probability-weighted deal values.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">📝</div>
-          <h3>Activity Log</h3>
-          <p>Every call, email, and meeting logged with timestamps. Know exactly where each lead stands.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">⚡</div>
-          <h3>5-Minute Setup</h3>
-          <p>Copy the sheet, paste the script, set one trigger. You're operational in under 5 minutes.</p>
+        <div class="feature">
+          <div class="icon">₹</div>
+          <h3>Priced for a solo business</h3>
+          <p>Under ₹300 each, paid once. A CRM SaaS subscription for one user costs more every year than all three of these together.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="demo">
+  <section id="bundle">
     <div class="container">
-      <h2>What You Get</h2>
-      <div class="demo-grid">
-        <div class="demo-card">
-          <div class="label">📄 Leads Sheet</div>
-          <pre>Company    | Stage      | Value  | Follow-Up
-────────────────────────────────────
-Acme Corp  | Cold       | ₹50K  | Jun 4
-Beta Tech  | Contacted  | ₹75K  | Jun 5
-Gamma Sol  | Qualified  | ₹1.2L | Jun 6
-Delta Corp | Proposal   | ₹2L   | Jun 8</pre>
-        </div>
-        <div class="demo-card">
-          <div class="label">📊 Dashboard</div>
-          <pre>Pipeline Value     ₹7.9L
-Active Leads       12
-Avg Deal Size      ₹65K
-Conversion Rate    68%
-💎 Closed Won      ₹8.5L this quarter</pre>
-        </div>
-        <div class="demo-card">
-          <div class="label">📧 Auto Email</div>
-          <pre>Subject: 3 leads need follow-up today
-────────────────────────────
-1. Acme Corp — Cold
-2. Delta Inc — Proposal
-3. Beta Tech — Contacted
+      <h2>The whole loop, one purchase</h2>
+      <p class="sub">Every product separately is ₹797. Together, ₹599.</p>
+      <div class="grid" style="max-width:360px;margin:0 auto;" data-bundle></div>
+    </div>
+  </section>
 
-Open your CRM to update these leads.</pre>
-        </div>
+  <section class="alt" id="faq">
+    <div class="container">
+      <h2>Questions worth asking first</h2>
+      <div class="faq">
+        <details>
+          <summary>Do I need to know how to code?</summary>
+          <p>No. Setup is copy-paste into the Apps Script editor and clicking through a menu. The guides assume you have never opened Apps Script before.</p>
+        </details>
+        <details>
+          <summary>Why is it built on Google Sheets instead of a real app?</summary>
+          <p>Because a real app costs money every month, holds your data somewhere you did not choose, and you cannot change how it works. Sheets runs free on any device, the data is yours, and every formula here is editable.</p>
+        </details>
+        <details>
+          <summary>Are there limits on the free Google account?</summary>
+          <p>Apps Script has generous daily quotas that a solo workload will not approach. Email-sending caps are the only one worth knowing about, and both guides explain the numbers.</p>
+        </details>
+        <details>
+          <summary>Can I use it for more than one business?</summary>
+          <p>Yes — one licence covers every business you personally own. Reselling or redistributing is not permitted.</p>
+        </details>
+        <details>
+          <summary>What if it does not fit how I work?</summary>
+          <p>Email me within 30 days and you get a full refund, no questions asked. Refunds cost me less than shipping something people hate.</p>
+        </details>
+        <details>
+          <summary>How is this delivered?</summary>
+          <p>Instant download after checkout: a ZIP with the script, sample data, a written setup guide, and a one-page quick start.</p>
+        </details>
       </div>
     </div>
   </section>
 
-  <section class="who">
+  <footer class="footer">
     <div class="container">
-      <h2>Perfect For</h2>
-      <ul class="who-list">
-        <li>Solo founders bootstrapping their startup</li>
-        <li>Freelancers juggling multiple clients</li>
-        <li>Small business owners without CRM budget</li>
-        <li>Consultants managing sales conversations</li>
-        <li>Anyone tired of losing leads in WhatsApp / email</li>
-        <li>You 💪</li>
-      </ul>
+      <p>Built by someone who actually ships software. <a href="mailto:hello@leadstack.dev">Questions before buying?</a></p>
+      <p style="margin-top:8px">© <span data-year>2026</span> LeadStack Templates</p>
     </div>
-  </section>
+  </footer>
 
-  <div id="buy" style="padding:60px 0;text-align:center;background:#121214;">
-    <div class="container">
-      <h2 style="font-size:28px;margin-bottom:16px;">Get Your CRM Template</h2>
-      <div style="font-size:24px;font-weight:700;color:#6366f1;margin-bottom:8px;">₹299</div>
-      <p style="color:#71717a;margin-bottom:24px;">One-time payment. Lifetime access. Instant download.</p>
-      <a href="#" onclick="alert('Coming soon! Create your Gumroad account at gumroad.com'); return false;" class="cta" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;">Buy on Gumroad →</a>
-      <div style="margin-top:24px;font-size:14px;color:#71717a;">
-        ✅ Instant download · ✅ No subscription · ✅ 30-day refund
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <p>Built by someone who actually builds CRM software. <a href="mailto:support@example.com">Questions?</a></p>
-    <p style="margin-top:8px;">© 2026 LeadStack Templates</p>
-  </div>
+  <script src="products.js"></script>
+  <script src="store.js"></script>
 </body>
 </html>

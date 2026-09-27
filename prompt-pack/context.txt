@@ -1,0 +1,23 @@
+# Your business, described once. batch_runner.py substitutes these into every
+# [BRACKET] it recognises. One "KEY: value" pair per line; # starts a comment.
+#
+# Keys are matched case-insensitively against the bracket name. Anything you
+# leave out stays visible as [BRACKET] in the output, and the runner lists the
+# ones still unfilled so you know what to add.
+#
+# Fill this for your own business, then run:
+#   python3 batch_runner.py --category Email --context context.txt --dry-run
+
+BUSINESS TYPE: a two-person product photography studio
+CUSTOMER: D2C skincare and food brands doing 10-100 orders a day
+OFFER: a monthly subscription for 20 edited product images
+PRICE: 25000 per month
+COMPETITOR: hiring an in-house photographer
+INDUSTRY: e-commerce
+COUNTRY: India
+TEAM SIZE: 2
+
+# Useful for prompts that reference your numbers:
+HOURS: 20
+STRENGTH: turnaround speed and colour accuracy
+WEAK SPOTS: writing, pricing, and chasing late payments

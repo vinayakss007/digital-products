@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM & Sales Tracker Template — LeadStack</title>
+  <meta name="description" content="Turn a messy lead list into a working sales pipeline in 5 minutes. Automated follow-up reminders, weighted revenue dashboard and activity log, all inside Google Sheets.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Lead<span>Stack</span></a>
+      <div class="nav-links"><a href="index.html#products">All products</a><a href="index.html#bundle">Bundle</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="index.html">Products</a> / CRM &amp; Sales Tracker</div>
+      <div class="hero-badge">📊 Google Sheets CRM</div>
+      <h1>You are losing deals to<br><em>forgetting, not to competitors.</em></h1>
+      <p>The lead from three weeks ago who "went quiet" did not vanish. Nobody followed up. This template fixes that in one afternoon, without a CRM subscription.</p>
+      <div data-price="crm"></div>
+      <div class="cta-row" style="margin-top:8px"><div data-buy="crm"></div></div>
+      <div class="assure">Instant download · One-time payment · 30-day refund</div>
+    </div>
+  </header>
+
+  <section class="alt">
+    <div class="container">
+      <h2>What it actually does</h2>
+      <p class="sub">Not a prettier list. A list that runs.</p>
+      <div class="features">
+        <div class="feature"><div class="icon">📧</div><h3>Follow-up reminders by email</h3><p>Every morning it checks which leads are overdue and emails you the list. This is the feature that pays for the template.</p></div>
+        <div class="feature"><div class="icon">💎</div><h3>Weighted pipeline value</h3><p>A ₹2,00,000 proposal at 60% is not ₹2,00,000 of revenue. It forecasts on stage probability so you can plan on real money.</p></div>
+        <div class="feature"><div class="icon">🔄</div><h3>One-click stage moves</h3><p>Move a lead from Qualified to Proposal from a menu. It stamps the date, reschedules the follow-up and logs the change.</p></div>
+        <div class="feature"><div class="icon">📊</div><h3>Dashboard that rebuilds itself</h3><p>Pipeline value, average deal size, conversion rate and deals lost — recalculated on demand, no formulas to maintain.</p></div>
+        <div class="feature"><div class="icon">📝</div><h3>Activity log per lead</h3><p>Every interaction recorded with a timestamp and who logged it, so you know what you last said to each person.</p></div>
+        <div class="feature"><div class="icon">🏷️</div><h3>Source and tag tracking</h3><p>Find out whether referrals or cold outreach actually produces revenue, instead of guessing.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What you get</h2>
+      <div class="two-col">
+        <div class="demo-card"><div class="label">📄 Leads tab</div>
+<pre>Lead    Company          Stage        Value      Follow-up
+──────────────────────────────────────────────────────────
+L001    Acme Corp        Cold         ₹50,000    25 Sep
+L002    Beta Tech        Contacted    ₹75,000    26 Sep
+L003    Gamma Solutions  Qualified    ₹1,20,000  29 Sep
+L004    Delta Corp       Proposal     ₹2,00,000  02 Oct
+L005    Epsilon Inc      Negotiation  ₹3,00,000  04 Oct</pre></div>
+        <div class="demo-card"><div class="label">📊 Dashboard output</div>
+<pre>Total Leads          7
+Active Leads         5
+Pipeline Value    ₹4,28,000   ← probability-weighted
+Closed Won        ₹1,50,000
+Avg Deal Size     ₹1,49,000
+Conversion Rate       50.0%
+Lost Deals              1</pre></div>
+        <div class="demo-card"><div class="label">📧 The morning email</div>
+<pre>Subject: CRM Reminder: 2 lead(s) need
+         follow-up today
+
+Company        Stage    Value      Notes
+Acme Corp      Cold     ₹50,000    Met at conference
+Beta Tech      Contacted ₹75,000   Friend referral</pre></div>
+        <div class="demo-card"><div class="label">📦 In the download</div>
+<pre>README.md            full setup guide
+crm_script.gs        the automation
+Sheet1_Leads.csv     7 sample leads
+QUICKSTART.txt       one-page start</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <h2>Setup, honestly</h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><div><h4>Create a sheet and paste the script</h4><p>Extensions → Apps Script → paste → save. Five clicks.</p></div></div>
+        <div class="step"><div class="n">2</div><div><h4>Run setup once</h4><p>Creates the Leads, Pipeline, Activities, Dashboard and Settings tabs with headers filled in.</p></div></div>
+        <div class="step"><div class="n">3</div><div><h4>Set your email and follow-up interval</h4><p>Two fields on the Settings tab.</p></div></div>
+        <div class="step"><div class="n">4</div><div><h4>Add a daily trigger</h4><p>One dropdown in the Apps Script triggers panel. This is what makes the reminders automatic.</p></div></div>
+        <div class="step"><div class="n">5</div><div><h4>Paste in your real leads</h4><p>Sample data included so you can see it working before you commit your own.</p></div></div>
+      </div>
+      <p style="text-align:center;color:var(--dim);font-size:14px;margin-top:28px">Roughly five minutes if you have used Google Sheets before.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Built for</h2>
+      <div class="two-col" style="max-width:720px;margin:0 auto">
+        <ul class="who-list" style="list-style:none">
+          <li>Solo founders bootstrapping without a sales team</li>
+          <li>Freelancers juggling 10+ live conversations</li>
+          <li>Consultants who need to remember what they promised</li>
+        </ul>
+        <ul class="who-list" style="list-style:none">
+          <li>Small teams (2–10) without a CRM budget</li>
+          <li>Anyone whose leads currently live in WhatsApp</li>
+          <li>Not for: teams needing permissions, roles or audit trails</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt buy">
+    <div class="container">
+      <h2>Get the CRM template</h2>
+      <div data-price="crm"></div>
+      <div data-buy="crm"></div>
+      <div class="assure">₹299 once. A one-user CRM subscription costs more every year.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="index.html">All products</a> · <a href="mailto:hello@leadstack.dev">Pre-sale questions</a></p>
+      <p style="margin-top:8px">© <span data-year>2026</span> LeadStack Templates</p>
+    </div>
+  </footer>
+  <script src="products.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

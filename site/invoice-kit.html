@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice &amp; Cash-Flow Kit — PDF Invoices from Google Sheets | LeadStack</title>
+  <meta name="description" content="Generate professional PDF invoices from a Google Sheet, email them with one click, and see exactly who owes you money and how late they are. No invoicing subscription.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Lead<span>Stack</span></a>
+      <div class="nav-links"><a href="index.html#products">All products</a><a href="index.html#bundle">Bundle</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="index.html">Products</a> / Invoice &amp; Cash-Flow Kit</div>
+      <div class="hero-badge">🧾 Invoicing inside Google Sheets</div>
+      <h1>Unpaid invoices are not a<br><em>client problem. They are a tracking problem.</em></h1>
+      <p>Type the work, click once, a clean PDF exists and lands in their inbox. Three weeks later you know precisely which of them still has not paid and for how long.</p>
+      <div data-price="invoice"></div>
+      <div class="cta-row" style="margin-top:8px"><div data-buy="invoice"></div></div>
+      <div class="assure">Instant download · One-time payment · No invoicing subscription</div>
+    </div>
+  </header>
+
+  <section class="alt">
+    <div class="container">
+      <h2>The whole flow, from one sheet</h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><div><h4>New Draft Invoice</h4><p>Takes the next number (INV-0001, 0002, …) and sets the due date from your payment terms. No reusing an old number by accident.</p></div></div>
+        <div class="step"><div class="n">2</div><div><h4>Type line items plainly</h4><p>One per line: <code>Website design | 1 | 45000</code>. Quantity and rate become the amount; tax and total follow.</p></div></div>
+        <div class="step"><div class="n">3</div><div><h4>Create PDF in Drive</h4><p>A real invoice document — your address, their GSTIN, an itemised table, totals in lakh-grouped format — saved to an Invoices folder.</p></div></div>
+        <div class="step"><div class="n">4</div><div><h4>Email PDF to Client</h4><p>Attaches it, states the amount and the due date, and marks the row Sent. Confirm dialog first, so nothing fires by mis-click.</p></div></div>
+        <div class="step"><div class="n">5</div><div><h4>Mark Row as Paid</h4><p>Stamps the date, sets the status, and appends a row to your Payments log. Your books write themselves.</p></div></div>
+        <div class="step"><div class="n">6</div><div><h4>Refresh Cash-Flow Summary</h4><p>Rebuilds the dashboard: collected, outstanding, and overdue split into 1–30, 31–60 and 60+ days.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What it shows you that a list of PDFs does not</h2>
+      <div class="two-col">
+        <div class="demo-card"><div class="label">📊 Cash-flow dashboard</div>
+<pre>Collected          ₹3,26,900
+Outstanding        ₹4,56,188
+  Not yet due       ₹1,17,764
+  1–30 days late    ₹1,41,600
+  31–60 days late   ₹1,29,800
+  60+ days late      ₹67,024   ← this one matters
+Still drafts         ₹56,640   (not counted as owed)</pre></div>
+        <div class="demo-card"><div class="label">🧾 An invoice as the client sees it</div>
+<pre>      ARCLIGHT STUDIO                 INVOICE
+   14 FC Road, Pune 411004            INV-0004
+   arc@arclight.studio                [ SENT ]
+   GSTIN: 27AAEFA4455P1Z8
+
+   Bill to                  Issued   06 Aug 2026
+   Meridian Clinic          Due      20 Aug 2026
+   Banjara Hills, Hyderabad 500034
+   GSTIN: 36AAHCM7788N1Z2
+
+Description              Qty    Rate     Amount
+Patient intake automation  1  ₹95,000   ₹95,000
+Staff training             2  ₹7,500    ₹15,000
+
+                Subtotal            ₹1,10,000
+                Tax (18%)            ₹19,800
+                TOTAL               ₹1,29,800
+
+   Payment due within 14 days of issue.</pre></div>
+        <div class="demo-card"><div class="label">📧 The 9am email</div>
+<pre>Subject: Invoices: 3 overdue, 1 due
+         within 3 days
+
+Overdue — send a reminder
+ • INV-0003 — Delta Structures,
+   ₹67,024 (due 13 Jul 2026)
+ • INV-0004 — Meridian Clinic,
+   ₹1,29,800 (due 20 Aug 2026)
+ • INV-0005 — Kite &amp; Co Studio,
+   ₹1,41,600 (due 15 Sep 2026)
+
+Due soon — consider a heads-up
+ • INV-0006 — Saffron Coffee, ₹63,720</pre></div>
+        <div class="demo-card"><div class="label">🗓️ Month by month</div>
+<pre>Month     Invoiced   Collected
+2026-05   ₹2,41,900  ₹2,41,900
+2026-06    ₹67,024         ₹0
+2026-07    ₹85,000    ₹85,000
+2026-08   ₹2,71,400         ₹0
+2026-09   ₹1,74,404         ₹0
+
+Invoiced vs collected by the month the
+work was billed, so you can see the gap
+widening before it hurts.</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <h2>Small things that matter when money is involved</h2>
+      <div class="features">
+        <div class="feature"><div class="icon">🔢</div><h3>Indian number formatting</h3><p>₹1,41,600, not ₹141,600. Lakh grouping throughout, because the alternative makes clients do arithmetic and ask questions.</p></div>
+        <div class="feature"><div class="icon">🔒</div><h3>Nothing sends without a confirm</h3><p>Email and stage changes ask first, and show you the amount before anything leaves.</p></div>
+        <div class="feature"><div class="icon">🧱</div><h3>Drafts don't pretend to be receivables</h3><p>An unfinished invoice stays out of your outstanding total. Only what you actually sent counts as money owed.</p></div>
+        <div class="feature"><div class="icon">🔢</div><h3>Numbers that don't collide</h3><p>Invoice numbering continues from the highest existing number, and a blank row or a stray header can't shift your columns out of sync.</p></div>
+        <div class="feature"><div class="icon">🧪</div><h3>Tested on the maths</h3><p>92 automated checks cover totals, tax rounding, the overdue age bands, blank sheets and bad input — plus the shipped sample data end to end.</p></div>
+        <div class="feature"><div class="icon">🔓</div><h3>Edit anything</h3><p>Columns are mapped in one config block at the top. Currency per invoice. The PDF is plain HTML — put your logo on it if you want.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What you get</h2>
+      <div class="two-col" style="max-width:720px;margin:0 auto">
+        <div class="demo-card"><div class="label">📦 In the download</div>
+<pre>invoice_script.gs    the whole tool
+clients_sample.csv   5 clients, GSTIN included
+invoices_sample.csv  8 invoices covering every
+                     status: paid, current,
+                     1-30, 31-60, 60+ overdue
+README.md            7-step setup guide
+QUICKSTART.txt       one page, numbered</pre></div>
+        <div class="demo-card"><div class="label">🧠 What it assumes</div>
+<pre>A Google account. Nothing else.
+
+No payment gateway: this creates and
+tracks invoices, it does not take card
+payments. Collect via UPI, NEFT or your
+bank link, then mark it paid.</pre></div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:14.5px;margin-top:26px">
+        Setup is six minutes: paste the script, run setup once, fill Settings, add your clients.
+      </p>
+    </div>
+  </section>
+
+  <section class="alt buy">
+    <div class="container">
+      <h2>Get the Invoice Kit</h2>
+      <div data-price="invoice"></div>
+      <div data-buy="invoice"></div>
+      <div class="assure">₹299 once. Most invoicing tools charge that every month.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="index.html">All products</a> · <a href="mailto:hello@leadstack.dev">Pre-sale questions</a></p>
+      <p style="margin-top:8px">© <span data-year>2026</span> LeadStack Templates</p>
+    </div>
+  </footer>
+  <script src="products.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

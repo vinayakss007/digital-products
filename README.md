@@ -1,48 +1,82 @@
-# Passive Income Tech Content Automator
+# Digital Products — LeadStack
 
-This project is a centralized, automated tech news and product website using WordPress as the CMS. It includes a custom WordPress theme styled like TechRadar, and a Python automation script that continuously scrapes tech news, generates articles via an LLM, and publishes them to the CMS.
+A small catalog of sellable digital products, each one a working Google Sheets /
+CSV / prompt tool rather than a pretty notion template. Everything here is
+packaged for sale, tested before release, and served by a static storefront.
 
-## Architecture
+## The Catalog
 
-- **WordPress:** Acts as the CMS and frontend.
-- **Theme:** The custom `tech-passive-income-theme` displays articles in a grid-like news structure.
-- **Python Script:** The `content_automator.py` handles the scraping (`requests`, `beautifulsoup4`) and generation logic (`openai`), and communicates with WordPress using `wp-cli` commands.
+| Product | Price | What the buyer gets |
+|---|---|---|
+| **CRM & Sales Tracker Template** | ₹299 | Google Apps Script CRM: one-click stage moves, daily follow-up emails, weighted pipeline, dashboard |
+| **Invoice & Cash Flow Kit** | ₹299 | Apps Script invoicing: numbered invoices, one-click PDF in Drive, emailed PDFs, aging dashboard, 9am overdue email |
+| **Small-Business Prompt Pack** | ₹199 | 120 prompts across 8 jobs, each with variables to fill, when to use it, expected output + 6 system prompts and a batch runner |
+| **Solo Business Starter Bundle** | ₹599 | All three, with a "start here" guide that sequences them |
 
-## Prerequisites
+Store copy, pricing rationale, and the launch order live in
+[`store-listings.md`](store-listings.md).
 
-- PHP 8.x
-- Python 3
-- Required Python packages: `requests`, `beautifulsoup4`, `openai`
-- `curl`, `unzip`
+## Layout
 
-## Installation & Setup
+```
+crm-template/     Apps Script CRM + sample CSV + QUICKSTART.txt + README.md
+invoice-kit/      Apps Script invoicing/cash-flow + sample clients & invoices
+prompt-pack/      prompts.csv, system-prompts.md, context.txt, batch_runner.py
+site/             storefront (index + one page per product), shared styles.css
+tests/            196 automated checks across six suites
+build_products.py builds and verifies the four ZIPs in dist/
+store-listings.md copy-paste Gumroad/Payhip listings + go-live checklist
+```
 
-We provide an automated setup script that downloads and configures WordPress locally with SQLite (no separate MySQL database needed), installs a custom theme, and prepares everything.
+## Build The Products
 
-1. Run the setup script:
-   ```bash
-   ./setup.sh
-   ```
+```bash
+python3 build_products.py            # all four ZIPs into dist/
+python3 build_products.py --list     # show what would be built
+python3 build_products.py --check    # build, then verify every ZIP opens cleanly
+python3 build_products.py prompt-pack invoice-kit
+```
 
-2. Start the local PHP development server:
-   ```bash
-   cd wordpress
-   php -S 0.0.0.0:8000
-   ```
-   *The WordPress site will be available at `http://localhost:8000`.*
+`dist/` is gitignored — ZIPs are build artifacts, upload them to Gumroad/Payhip,
+don't commit them.
 
-3. Install Python dependencies for the automation script:
-   ```bash
-   pip install requests beautifulsoup4 openai
-   ```
+## Test Before You Ship
 
-## Running the Content Automator
+```bash
+./tests/run_tests.sh
+```
 
-The `content_automator.py` script pulls trending stories from Hacker News and generates categorized articles (News, Reviews, Ebooks).
+Six suites, 196 checks. The Apps Script products run against a mock Apps Script
+runtime (`tests/mock.js`) in Node's `vm`, so the real `.gs` files get executed —
+menu wiring, aging buckets, PDF generation, email bodies, dashboard output —
+without needing a Google account. The prompt pack is validated as data (every
+prompt's declared variables match its actual `[BRACKETS]`, lengths, category
+coverage). The storefront is validated for link/ID integrity and escaping.
 
-1. Ensure you have your `OPENAI_API_KEY` set as an environment variable (otherwise, it will use a mock fallback response for generating articles).
-2. The script runs natively and uses `wp-cli.phar` (downloaded during setup) to publish directly to the local WordPress installation.
-3. Run the script:
-   ```bash
-   python3 content_automator.py
-   ```
+Keep the marketing honest: the demo numbers on `site/*.html` are generated from
+actual script output against the sample CSVs, so if a test suite breaks, a
+selling claim is stale too.
+
+## Storefront
+
+Static, no build step. `site/products.js` is the single source of truth —
+product copy, prices, and `BUY_LINKS`. Pages mount content via `data-*`
+attributes and `site/store.js` renders it.
+
+**To go live:** set your real Gumroad/Payhip URLs in `window.BUY_LINKS` in
+`site/products.js`, replace `hello@leadstack.dev`, push `site/**` to `main`, and
+the `Deploy Landing Page to Netlify` action publishes it.
+
+## Legacy: WordPress Content Automator
+
+`content_automator.py`, `setup.sh`, and `wp-content/` are an earlier, unrelated
+experiment (scrape Hacker News → generate articles → publish to a local WordPress
+with a TechRadar-style theme). It still works the same way:
+
+```bash
+./setup.sh          # installs WordPress + SQLite + theme locally
+php -S 0.0.0.0:8000 # from ./wordpress
+python3 content_automator.py
+```
+
+Nothing in the product catalog depends on it.

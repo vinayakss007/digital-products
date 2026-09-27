@@ -1,0 +1,30 @@
+INVOICE & CASH-FLOW KIT — QUICK START
+=====================================
+
+1. sheets.new                        -> create an empty spreadsheet
+2. Extensions -> Apps Script         -> paste invoice_script.gs -> save
+3. Reload the sheet                  -> a "Invoice Kit" menu appears
+4. Menu -> 1. Run Setup (once)       -> creates Clients, Invoices, Payments, Settings tabs
+5. Fill the Settings tab             -> your business name, address, email, tax rate, terms
+6. Add clients on the Clients tab    -> name must match exactly how you type it later
+
+SEND AN INVOICE
+7.  Menu -> 2. New Draft Invoice     -> auto-numbered, due date from your terms
+8.  Type client name + line items in one cell, one per line:
+        Website design | 1 | 45000
+        Retainer | 3 | 5000
+9.  Menu -> 3. Recalculate Totals
+10. Menu -> 4. Create PDF in Drive   (or 5. Email PDF to Client to send immediately)
+
+WHEN MONEY ARRIVES
+11. Select that row -> Menu -> 6. Mark Row as Paid
+
+ANY TIME
+    Menu -> Refresh Cash-Flow Summary   -> collected / outstanding / overdue by age
+    Menu -> Chase Overdue Payments      -> copy-paste reminder text
+
+OPTIONAL: daily 9am email about overdue invoices
+    Apps Script -> Triggers -> Add Trigger
+    function: dailyOverdueCheck  event: Time-driven, Day timer
+
+Need help? Full guide in README.md, step 5 covers line-item formatting.

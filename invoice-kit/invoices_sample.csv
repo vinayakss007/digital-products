@@ -1,0 +1,15 @@
+Invoice #,Client,Issue Date,Due Date,Line Items (one per line),Subtotal,Tax %,Tax,Total,Status,Paid Date,Currency,Notes
+INV-0001,Northwind Logistics,2026-05-30,2026-06-13,"Inventory module build | 1 | 180000
+Deployment support | 1 | 25000",205000,18,36900,241900,Paid,2026-06-21,INR,Paid against PO-NL-2261.
+INV-0002,Saffron Coffee Roasters,2026-07-15,2026-07-29,"Shopify theme build | 1 | 65000
+Product photography direction | 8 | 2500",85000,0,0,85000,Paid,2026-07-31,INR,
+INV-0003,Delta Structures,2026-06-29,2026-07-13,"Structural report review | 1 | 40000
+Site visit | 2 | 8400",56800,18,10224,67024,Sent,,INR,Escalated twice. Consider pausing work.
+INV-0004,Meridian Clinic,2026-08-06,2026-08-20,"Patient intake automation | 1 | 95000
+Staff training | 2 | 7500",110000,18,19800,129800,Sent,,INR,Finance promised end of month.
+INV-0005,Kite & Co Studio,2026-08-24,2026-09-15,Brand refresh | 1 | 120000,120000,18,21600,141600,Sent,,INR,Gentle reminder sent 20 Sep.
+INV-0006,Saffron Coffee Roasters,2026-09-13,2026-09-27,"Subscription migration | 1 | 48000
+Handover docs | 1 | 6000",54000,18,9720,63720,Sent,,INR,Due today - send a heads-up.
+INV-0007,Northwind Logistics,2026-09-21,2026-10-05,"Retainer - September | 1 | 35000
+On-call hours | 6 | 1800",45800,18,8244,54044,Sent,,INR,
+INV-0008,Kite & Co Studio,2026-09-25,2026-10-09,Design system build | 1 | 48000,48000,18,8640,56640,Draft,,INR,Awaiting scope sign-off.

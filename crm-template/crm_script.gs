@@ -68,6 +68,17 @@ function setupTemplate() {
   pipeline.getRange('A1:D1').setFontWeight('bold');
 }
 
+// ─── STATUS RULE ───────────────────────────────────────────────────────────
+// A lead is "in play" unless its status is explicitly terminal. Matching only
+// the literal string 'Active' silently skips rows like 'Negotiating' (present
+// in the sample data), so those leads never get reminders and drop out of the
+// pipeline total.
+const CLOSED_STATUSES = ['won', 'lost', 'closed', 'inactive', 'done', 'no'];
+
+function isOpenLead(status) {
+  return !CLOSED_STATUSES.includes(String(status || '').trim().toLowerCase());
+}
+
 // ─── DAILY FOLLOW-UP CHECK ────────────────────────────────────────────────
 function checkFollowUps() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -89,7 +100,7 @@ function checkFollowUps() {
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
     const status = row[CONFIG.leadColumns.status]?.toString() || '';
-    if (status !== 'Active') continue;
+    if (!isOpenLead(status)) continue;
     
     const followUpStr = row[CONFIG.leadColumns.nextFollowUp];
     if (!followUpStr) continue;
@@ -115,6 +126,14 @@ function checkFollowUps() {
 }
 
 // ─── SEND EMAIL REMINDER ──────────────────────────────────────────────────
+// Cell text can contain & < > (e.g. "R&D <team>"), which breaks the HTML table
+// if inserted raw. Always escape before putting sheet values into an email body.
+function escapeHtml(value) {
+  return String(value === null || value === undefined ? '' : value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function sendFollowUpEmail(email, leads) {
   let html = `
     <h2>📋 Follow-Up Reminder</h2>
@@ -126,13 +145,14 @@ function sendFollowUpEmail(email, leads) {
   
   leads.forEach(l => {
     html += `<tr>
-      <td>${l.company}</td>
-      <td>${l.contact}</td>
-      <td>${l.stage}</td>
-      <td>${l.value?.toLocaleString() || '-'}</td>
-      <td>${l.notes || '-'}</td>
+      <td>${escapeHtml(l.company)}</td>
+      <td>${escapeHtml(l.contact)}</td>
+      <td>${escapeHtml(l.stage)}</td>
+      <td>${l.value ? Number(l.value).toLocaleString('en-IN') : '-'}</td>
+      <td>${escapeHtml(l.notes) || '-'}</td>
     </tr>`;
   });
+
   
   html += `</table>
     <p><em>Open your CRM tracker to update these leads.</em></p>`;
@@ -152,8 +172,11 @@ function updateDashboard() {
   
   if (data.length < 2) return;
   
-  const leads = data.slice(1);
-  const activeLeads = leads.filter(r => (r[CONFIG.leadColumns.status] || '').toString() === 'Active');
+  // Blank rows (no ID and no company) would otherwise inflate counts now that an
+  // empty status is treated as "in play".
+  const leads = data.slice(1).filter(r =>
+    String(r[CONFIG.leadColumns.id] || '').trim() || String(r[CONFIG.leadColumns.company] || '').trim());
+  const activeLeads = leads.filter(r => isOpenLead(r[CONFIG.leadColumns.status]));
   const wonLeads = leads.filter(r => (r[CONFIG.leadColumns.stage] || '').toString() === 'Closed Won');
   const lostLeads = leads.filter(r => (r[CONFIG.leadColumns.stage] || '').toString() === 'Closed Lost');
   
@@ -187,9 +210,9 @@ function updateDashboard() {
   row++;
   dash.getRange(row, 1, 1, 2).setValues([['Total Leads', leads.length]]); row++;
   dash.getRange(row, 1, 1, 2).setValues([['Active Leads', activeLeads.length]]); row++;
-  dash.getRange(row, 1, 1, 2).setValues([['Pipeline Value (₹)', totalPipeline.toLocaleString()]]); row++;
-  dash.getRange(row, 1, 1, 2).setValues([['Closed Won (₹)', totalWon.toLocaleString()]]); row++;
-  dash.getRange(row, 1, 1, 2).setValues([['Avg Deal Size (₹)', Math.round(avgDealSize).toLocaleString()]]); row++;
+  dash.getRange(row, 1, 1, 2).setValues([['Pipeline Value (₹)', totalPipeline.toLocaleString('en-IN')]]); row++;
+  dash.getRange(row, 1, 1, 2).setValues([['Closed Won (₹)', totalWon.toLocaleString('en-IN')]]); row++;
+  dash.getRange(row, 1, 1, 2).setValues([['Avg Deal Size (₹)', Math.round(avgDealSize).toLocaleString('en-IN')]]); row++;
   dash.getRange(row, 1, 1, 2).setValues([['Conversion Rate', conversionRate.toFixed(1) + '%']]); row++;
   dash.getRange(row, 1, 1, 2).setValues([['Lost Deals', lostLeads.length]]); row++;
   
@@ -197,7 +220,7 @@ function updateDashboard() {
   dash.getRange(row, 1, 1, 3).setValues([['Pipeline by Stage', 'Count', 'Value (₹)']]).setFontWeight('bold');
   row++;
   stageData.forEach(sd => {
-    dash.getRange(row, 1, 1, 3).setValues([[sd.stage, sd.count, sd.value.toLocaleString()]]);
+    dash.getRange(row, 1, 1, 3).setValues([[sd.stage, sd.count, sd.value.toLocaleString('en-IN')]]);
     row++;
   });
 }
@@ -255,15 +278,72 @@ function moveToStage(leadRow, newStage) {
   updateDashboard();
 }
 
+// ─── MENU STAGE CONTROLS ───────────────────────────────────────────────────
+// moveToStage() needs a row number, so it cannot be a menu item directly.
+// These wrappers act on whichever row is selected in the Leads tab.
+function setStageTo_(stage) {
+  const ui = SpreadsheetApp.getUi();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.leadsSheet);
+  const row = sheet.getActiveRange().getRow();
+  const leadId = sheet.getRange(row, CONFIG.leadColumns.id + 1).getValue();
+  const current = sheet.getRange(row, CONFIG.leadColumns.stage + 1).getValue();
+
+  if (!String(leadId).trim()) {
+    ui.alert('Select a row that has a Lead ID first (run CRM Tools → Run Setup if the sheet is empty).');
+    return;
+  }
+  if (String(current) === stage) {
+    ui.alert('Already there', leadId + ' is already at ' + stage + '.', 'OK');
+    return;
+  }
+  moveToStage(row, stage);
+  ui.alert('Updated', leadId + ': ' + current + ' → ' + stage, 'OK');
+}
+
+function setStageCold() { setStageTo_('Cold'); }
+function setStageContacted() { setStageTo_('Contacted'); }
+function setStageQualified() { setStageTo_('Qualified'); }
+function setStageProposal() { setStageTo_('Proposal'); }
+function setStageNegotiation() { setStageTo_('Negotiation'); }
+function setStageWon() { setStageTo_('Closed Won'); }
+function setStageLost() { setStageTo_('Closed Lost'); }
+
+function logNoteForSelected() {
+  const ui = SpreadsheetApp.getUi();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.leadsSheet);
+  const row = sheet.getActiveRange().getRow();
+  const leadId = sheet.getRange(row, CONFIG.leadColumns.id + 1).getValue();
+  if (!String(leadId).trim()) { ui.alert('Select a lead row first.'); return; }
+  const answer = ui.prompt('Log an activity for ' + leadId, 'What happened?', ui.ButtonSet.OK_CANCEL);
+  if (answer.getSelectedButton() !== ui.Button.OK) return;
+  const text = String(answer.getResponseText() || '').trim();
+  if (!text) { ui.alert('Nothing to log.'); return; }
+  logActivity(leadId, 'Note', text);
+  sheet.getRange(row, CONFIG.leadColumns.lastContacted + 1).setValue(new Date());
+  updateDashboard();
+}
+
 // ─── MENU — Adds custom menu on open ──────────────────────────────────────
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
-  const menu = ui.createMenu('📊 CRM Tools');
-  menu.addItem('🔄 Update Dashboard', 'updateDashboard');
-  menu.addItem('⚙️ Run Setup', 'setupTemplate');
-  menu.addSeparator();
-  menu.addItem('📧 Check Follow-ups Now', 'checkFollowUps');
-  menu.addToUi();
+  ui.createMenu('📊 CRM Tools')
+    .addItem('🔄 Update Dashboard', 'updateDashboard')
+    .addItem('📝 Log Activity For Selected Lead', 'logNoteForSelected')
+    .addSeparator()
+    .addSubMenu(ui.createMenu('➡️ Move Selected Lead To Stage')
+      .addItem('Cold', 'setStageCold')
+      .addItem('Contacted', 'setStageContacted')
+      .addItem('Qualified', 'setStageQualified')
+      .addItem('Proposal', 'setStageProposal')
+      .addItem('Negotiation', 'setStageNegotiation')
+      .addSeparator()
+      .addItem('✅ Closed Won', 'setStageWon')
+      .addItem('❌ Closed Lost', 'setStageLost'))
+    .addSeparator()
+    .addItem('📧 Check Follow-ups Now', 'checkFollowUps')
+    .addItem('⏰ Install Daily Reminder Trigger', 'installTrigger')
+    .addItem('⚙️ Run Setup (once)', 'setupTemplate')
+    .addToUi();
 }
 
 // ─── INSTALL — Run once to set up trigger ─────────────────────────────────

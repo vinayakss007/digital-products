@@ -1,0 +1,29 @@
+CRM & SALES TRACKER — QUICK START
+=================================
+
+1. sheets.new                        -> create an empty spreadsheet
+2. Extensions -> Apps Script         -> delete default code, paste crm_script.gs, save
+3. Click Run once                    -> accept the permission prompt
+4. Reload the sheet                  -> a "CRM Tools" menu appears
+5. Menu -> Run Setup                 -> creates Leads, Pipeline, Activities, Dashboard, Settings
+6. Import Sheet1_Leads.csv           -> paste into the Leads tab (row 2) to see it working
+7. Settings tab                      -> put your email in row 2, pick your follow-up gap in row 3
+
+MAKE REMINDERS AUTOMATIC
+8. Apps Script -> Triggers (clock icon) -> Add Trigger
+   function: checkFollowUps   event: Time-driven, Day timer, 9am
+   This is the step that makes the template remember for you.
+
+DAY TO DAY
+   Menu -> Update Dashboard           -> refresh pipeline value and conversion rate
+   Move a lead by editing its Stage cell to one of:
+     Cold, Contacted, Qualified, Proposal, Negotiation, Closed Won, Closed Lost
+   Set "Next Follow-Up" to a date; if it arrives and the lead is still open,
+   the next morning email lists it.
+
+WHAT THE NUMBERS MEAN
+   Pipeline Value  = sum of Expected Value for open leads (deal value x stage odds)
+   Conversion Rate = won / (won + lost)
+   Closed Won      = real face value of deals you actually signed
+
+Need more detail? README.md covers every tab and how to customise stages.
