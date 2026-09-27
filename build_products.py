@@ -52,19 +52,27 @@ PRODUCTS = {
         "price": 349,
         "include": None,
     },
+    "retainer-kit": {
+        "title": "Retainer & Recurring Revenue Kit",
+        "folder": "retainer-kit",
+        "zip_name": "Retainer-Recurring-Revenue-Kit.zip",
+        "price": 399,
+        "include": None,
+    },
     "bundle": {
         "title": "Solo Business Starter Bundle",
         "folder": None,  # assembled from the other products
         "zip_name": "Solo-Business-Starter-Bundle.zip",
-        "price": 749,
-        "members": ["prompt-pack", "invoice-kit", "proposals-kit", "crm-template"],
+        "price": 999,
+        "members": ["prompt-pack", "invoice-kit", "proposals-kit", "retainer-kit", "crm-template"],
     },
 }
 
 BUNDLE_README = """Solo Business Starter Bundle
 ===========================
 
-Four tools that cover the whole loop: find the lead, price the work, win it, get paid.
+Five tools that cover the whole loop of working for yourself: find the lead, price
+the work, win it, bill it, and keep billing it every month.
 
 1. CRM & Sales Tracker Template
    Leads, pipeline stages, follow-up reminders, revenue dashboard.
@@ -82,19 +90,27 @@ Four tools that cover the whole loop: find the lead, price the work, win it, get
    PDF invoices from Google Sheets, plus who-owes-me-what tracking.
    Open invoice-kit/README.md
 
+5. Retainer & Recurring Revenue Kit
+   Monthly retainers billed in one click, overage included, double-billing impossible.
+   Open retainer-kit/README.md
+
 Start with whichever one hurts most today. Each works alone.
 
 IF YOU INSTALL MORE THAN ONE IN THE SAME SPREADSHEET
-The three Apps Script files are written to share one project: no name collisions, one
-menu each, a shared Settings tab that is merged rather than overwritten, and separate
-output tabs (Dashboard / Cash Flow / Proposal Dashboard). Proposals also converts an
-accepted quote straight into an invoice draft once the Invoice Kit is installed.
+The four Apps Script files are written to share one project: no name collisions, one
+menu each, a shared Settings tab that is seeded rather than overwritten, and separate
+output tabs (Dashboard / Cash Flow / Proposal Dashboard / Retainer Dashboard). Two
+bridges work once the Invoice Kit is installed: an accepted proposal becomes an invoice
+draft, and a due retainer becomes an invoice draft you can PDF and chase.
 
-Order that fits most people: CRM -> Proposals -> Invoice Kit.
+Order that fits most people: CRM -> Proposals -> Invoice Kit -> Retainer Kit.
+
+That coexistence is tested, not assumed: tests/test_bundle_scripts.js pastes all four
+scripts into one Apps Script project and checks the menus, the shared Settings tab, the
+four dashboards and both bridges.
 
 Every file here is yours to modify. Do not resell the pack itself.
 """
-
 
 def collect_files(spec: dict) -> list[tuple[Path, str]]:
     """Return (absolute path, path-inside-zip) pairs for one product."""

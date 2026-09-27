@@ -67,9 +67,10 @@ function setupProposals() {
     if (!book.getSheetByName(name)) book.insertSheet(name);
   });
 
-  // Upsert, never clear(): the Settings tab is shared with the CRM and the
-  // Invoice Kit in bundle installs, and clearing it would wipe their config.
-  prUpsertSettings_({
+  // Seed, never clear() and never overwrite: the Settings tab is shared with
+  // the CRM and the other kits in bundle installs, and a filled row belongs
+  // to whoever wrote it.
+  prSeedSettings_({
     'Your Business Name': 'Your Business',
     'Your Address': 'Street, City, State, PIN',
     'Your Email': Session.getActiveUser().getEmail(),
@@ -167,19 +168,28 @@ function prWriteInvoiceHeaders_(sheet) {
   sheet.getRange(1, 1, 1, PR_INVOICE_HEADERS.length).setValues([PR_INVOICE_HEADERS]).setFontWeight('bold');
 }
 
-function prUpsertSettings_(defaults) {
+function prSeedSettings_(defaults) {
   const book = prSheet_();
   let sheet = book.getSheetByName(PR.settingsSheet);
   if (!sheet) sheet = book.insertSheet(PR.settingsSheet);
   if (sheet.getLastRow() === 0) {
     sheet.getRange('A1:B1').setValues([['Setting', 'Value']]).setFontWeight('bold');
   }
-  const existing = sheet.getDataRange().getValues().slice(1);
   const at = {};
-  existing.forEach((r, i) => { const k = String(r[0]).trim(); if (k) at[k] = i + 2; });
+  const filled = {};
+  sheet.getDataRange().getValues().slice(1).forEach((r, i) => {
+    const key = String(r[0]).trim();
+    if (!key) return;
+    at[key] = i + 2;
+    // A key that already holds something belongs to the user or to another kit.
+    if (String(r[1] === null || r[1] === undefined ? '' : r[1]).trim() !== '') filled[key] = true;
+  });
+  // Seed, never overwrite: this tab is shared in bundle installs, so a second
+  // kit's Setup used to blank the first one's GSTIN, address and email. A key
+  // left empty is fair game — that is a placeholder waiting to be filled.
   Object.keys(defaults).forEach(key => {
-    if (at[key]) sheet.getRange(at[key], 2).setValue(defaults[key]);
-    else sheet.appendRow([key, defaults[key]]);
+    if (!at[key]) sheet.appendRow([key, defaults[key]]);
+    else if (!filled[key]) sheet.getRange(at[key], 2).setValue(defaults[key]);
   });
 }
 
@@ -857,12 +867,13 @@ function proposalKitMenu_() {
 // ─── MENU HOOK ──────────────────────────────────────────────────────────────
 // Apps Script keeps only ONE onOpen per project, so this block is identical in
 // every LeadStack script: whichever file loads last wins, and it builds every
-// menu whose builder exists. Install one product or all three — the menus are
+// menu whose builder exists. Install one product or all four — the menus are
 // correct either way.
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   if (typeof crmMenu_ === 'function') crmMenu_(ui);
   if (typeof invoiceKitMenu_ === 'function') invoiceKitMenu_(ui);
   if (typeof proposalKitMenu_ === 'function') proposalKitMenu_(ui);
+  if (typeof retainerKitMenu_ === 'function') retainerKitMenu_(ui);
 }
 

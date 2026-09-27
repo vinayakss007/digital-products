@@ -1,6 +1,6 @@
 # Store Listings — copy-paste ready for Gumroad / Payhip / Lemon Squeezy
 
-Four products plus a bundle. For each: paste the title into the product name, the short
+Five products plus a bundle. For each: paste the title into the product name, the short
 description into the summary, the full description into the body, then the tags. Attach the
 matching ZIP from `dist/`.
 
@@ -156,8 +156,9 @@ sales problem when it's a follow-up problem. On the sample data: 66.7%.
 
 ### Installing it next to the other LeadStack products
 Paste both scripts into one Apps Script project and both menus appear. Settings rows are
-upserted rather than cleared, each product writes its own dashboard tab, and the convert
-step feeds the Invoice Kit a real draft. The three products coexist under test, not by hope.
+seeded rather than overwritten, each product writes its own dashboard tab, and the convert
+step feeds the Invoice Kit a real draft. All four spreadsheet products coexist under test,
+not by hope.
 
 ### Honest limits
 - **No digital signature or contract execution.** "Accepted" is a status you set because they said yes. For a legally signed scope document you need an e-sign tool or a lawyer.
@@ -218,8 +219,10 @@ It does not take card payments. There is no payment gateway — you collect by U
 Paste `invoice_script.gs` and `proposal_script.gs` into the same Apps Script project and
 you get both menus. They share the Clients and Invoices tabs deliberately, each keeps its
 own Settings rows and its own dashboard tab (this one writes **Cash Flow**, the CRM writes
-**Dashboard**, Proposals writes **Proposal Dashboard**), and an accepted proposal lands
-here as a numbered draft.
+**Dashboard**, Proposals writes **Proposal Dashboard**, Retainer Kit writes **Retainer
+Dashboard**), and an accepted proposal lands here as a numbered draft. Add the Retainer Kit
+and a due retainer lands here as a numbered draft too — which is the point of the Invoices
+tab being shared.
 
 ### What's in the download
 `invoice_script.gs` · `clients_sample.csv` (5 clients) · `invoices_sample.csv` (8 invoices, one per status so you can see the whole dashboard working immediately) · `README.md` · `QUICKSTART.txt`
@@ -231,12 +234,118 @@ here as a numbered draft.
 
 ---
 
-## 5. Solo Business Starter Bundle — `dist/Solo-Business-Starter-Bundle.zip`
+## 5. Retainer & Recurring Revenue Kit — `dist/Retainer-Recurring-Revenue-Kit.zip`
 
-**Title:** Solo Business Starter Bundle — CRM, Proposals, Invoicing & Prompt Pack
+**Title (pick one)**
+- Retainer & Recurring Revenue Kit for Google Sheets
+- Bill Every Retainer In One Click — No Double Billing, Overage Included
+- Monthly Retainer Tracker Template for Freelancers & Agencies (Apps Script)
 
 **Short description**
-Four tools that cover the whole loop of working for yourself: get the lead, price the work, win it, bill it. ₹749 instead of ₹1,146.
+One click turns every due retainer into a correctly-priced draft invoice, overage hours included. It cannot bill the same month twice, it shows MRR that counts only work actually running, and it flags the client who hasn't logged an hour in 34 days. No billing-software subscription.
+
+**Full description**
+
+### The problem is not invoicing. It's remembering to invoice.
+You have four monthly retainers. One is billed on the 1st, one on the 28th, one you
+always bill "when the work feels like enough", and one quietly finished in August while
+still on your active list. The overage on the biggest one — 22 hours against a 20-hour
+agreement — goes unbilled because working out what to add is a half hour of arithmetic
+you never do.
+
+That is not a discipline problem, it's a missing tool. Recurring revenue dies in the
+gaps between "we agreed" and "I sent the invoice".
+
+### What one click actually does
+`🧾 Bill Due Retainers` looks at every retainer, decides what is billable, and writes a
+**Draft** invoice per due retainer onto the Invoices tab:
+
+```
+Monthly retainer — 2026-09 | 1 | 85000
+Overage: 2h beyond 20h | 2 | 4500
+Subtotal ₹94,000 · Tax (18%) ₹16,920 · Total ₹1,10,920
+```
+
+Then it stamps the retainer row with `2026-09`. Run it again tomorrow and it bills
+nothing — and shows you, per row, exactly why:
+
+```
+Nothing billed
+RET-002 — not due until day 28
+RET-005 — paused, not billable
+RET-006 — already billed for 2026-09
+RET-008 — ended 2026-08
+RET-009 — starts 2026-10, not this month
+```
+
+That skip list is the product. A silent "nothing happened" would be useless; you'd never
+know whether you were up to date or had lost a client.
+
+### MRR that isn't padded
+Eight rows say "Active" on the shipped sample. Six are actually live: one ended on 31 Aug
+and nobody changed its status, another doesn't start until October. So MRR is **₹4,20,000**,
+not ₹5,00,000 — and the ₹80,000 gap is shown to you as its own section, **Past End Date But
+Still Active**, with one click to fix them all.
+
+An inflated MRR is the most expensive lie a solo business tells itself, because it is the
+number you decide your own pay rise on.
+
+### The rest of the dashboard (real numbers from the shipped sample)
+- **Unbilled & Due Now ₹3,79,960** — what a single click would invoice right now
+- **Overage Billable ₹17,000** from 4 hours beyond included cover
+- **Average Utilisation 70.4%**, per client, so you can see the ₹1,20,000 retainer using
+  22 of 40 hours before the client does
+- **Revenue At Risk ₹1,00,000** — a client who is both ending and gone quiet is counted
+  once, not twice
+
+### The 9am email
+`Retainers: 4 unbilled, 2 at risk` — due and unbilled, what comes due within 3 days, what
+ends within 30, and **days since the last logged hour** per client. That last one is the
+earliest honest churn signal a solo business has: a client who stops emailing you isn't
+happy, they're finished. On the sample it catches Meridian Clinic at 34 days silent on a
+₹60,000/month retainer.
+
+### Details that matter when it's your money
+- **The double-billing guard lives in the data**, not in your memory: the period is stamped on the row
+- **Billing day is per retainer**, clamped to 1–28 so a 31st never silently bills on the 1st
+- **One source of truth for "is it billable"** — the dashboard, the email and the billing run all read the same function, so a report can never nag about something the run would skip
+- **Overage only bills when there's an agreed threshold.** No included hours means a flat fee, so it never invents a surprise line the client didn't agree to
+- **Invoice maths matches the Invoice Kit and Proposals Kit exactly** (`tax = round(subtotal × rate) / 100`), so a draft this kit writes recalculates there without drifting a rupee
+- **Hours are matched by `Retainer #` first** — a client with two retainers would otherwise be billed the same hours twice
+- **🔎 Reconcile Hours Log** names the typo, the 90-hour day, the undated entry — anything that quietly bills nothing
+- **Drafts, always.** It never emails a client or marks anything sent
+
+### Installing it next to the others
+Paste all four `.gs` files into one Apps Script project and you get four menus. This kit
+shares the Clients tab, writes to the same Invoices tab the Invoice Kit PDFs and chases,
+keeps its own dashboard and its own Settings rows, and does not overwrite what the other
+kits seeded. Verified by `tests/test_bundle_scripts.js`, which runs all four together.
+
+### Honest limits
+- **It does not collect money.** No UPI, no Razorpay, no payment links — it produces an invoice draft.
+- **It does not chase.** Overdue follow-up is the Invoice Kit's job; it is deliberately not this kit's.
+- **Not a timesheet.** Five columns exist to price a retainer. If you need per-task billing or client-visible logs, you need a time tool.
+- **Not GST advice.** Tax % is applied because you asked for it; a composite-supply or reverse-charge case needs an accountant.
+- **Monthly periods only.** Quarterly or annual retainers need a code change (`rrPeriod_`), which is one function and clearly marked.
+- **No multi-currency conversion.** It prints the currency you set; it does not exchange.
+- **Hours rows without a retainer number fall back to client name**, which double-counts for a client holding two retainers. Put the number in.
+
+### What's in the download
+`retainer_script.gs` · `retainers_sample.csv` (9 retainers — each one exists to demonstrate or exclude a rule, including the row that tests the double-billing guard) · `hours_sample.csv` (22 entries with one deliberate typo) · `clients_sample.csv` (5 clients with GSTINs) · `README.md` · `QUICKSTART.txt`
+
+### Price
+**₹399** one-time. One retainer you forgot to bill pays for it eleven times over.
+
+**Tags:** retainer tracker, recurring billing, google sheets invoicing, freelancer retainer, subscription tracking, MRR template, apps script, overage billing
+
+---
+
+## 6. Solo Business Starter Bundle — `dist/Solo-Business-Starter-Bundle.zip`
+
+**Title:** Solo Business Starter Bundle — CRM, Proposals, Invoicing, Retainers & Prompt Pack
+
+**Short description**
+Five tools that cover the whole loop of working for yourself: get the lead, price the work, win it, bill it, and keep billing it every month. ₹999 instead of ₹1,545.
 
 **Full description**
 
@@ -245,20 +354,23 @@ Every solo business runs the same loop, and most people buy a tool for one stage
 - **CRM & Sales Tracker Template** — so leads stop going quiet before they say yes
 - **Proposals & Quotes Kit** — so the quote is priced, written down, dated, and turns into an invoice when they say yes
 - **Invoice & Cash-Flow Kit** — so the work you finished actually gets paid for
+- **Retainer & Recurring Revenue Kit** — so the monthly money arrives without you remembering to ask for it
 - **Small Business Prompt Pack** — for all the writing around the work you keep postponing
 
-Each arrives as its own download and works alone. The three spreadsheet tools are also
-built to live in **one** Google Sheet: paste all three scripts into the same Apps Script
-project and you get three menus, one shared client list, three dashboards that don't
-overwrite each other, and a lead that goes CRM → proposal → invoice without retyping a
-name. That coexistence is tested, not assumed.
+Each arrives as its own download and works alone. The four spreadsheet tools are also
+built to live in **one** Google Sheet: paste all four scripts into the same Apps Script
+project and you get four menus, one shared client list, four dashboards that don't
+overwrite each other, and one Invoices tab that both an accepted proposal and a due
+retainer write into. A lead goes CRM → proposal → invoice → monthly retainer without
+retyping a name. That coexistence is tested, not assumed — all four scripts are loaded
+into one simulated Apps Script project in the test suite.
 
-Bought one at a time they total ₹1,146. All four together: **₹749** — less than two months
-of one SaaS seat, paid once.
+Bought one at a time they total ₹1,545. All five together: **₹999** — under two months of
+one SaaS seat, paid once.
 
-**₹749** one-time · all four products · 30-day refund
+**₹999** one-time · all five products · 30-day refund
 
-**Tags:** business bundle, freelancer toolkit, small business templates, CRM, invoicing, proposals, AI prompts, startup tools
+**Tags:** business bundle, freelancer toolkit, small business templates, CRM, invoicing, proposals, retainer tracking, AI prompts, startup tools
 
 ---
 
@@ -270,21 +382,23 @@ of one SaaS seat, paid once.
 | CRM Template | ₹299 | ₹399 | Your existing product, now tested. |
 | Invoice Kit | ₹299 | ₹399 | Same buyer as the CRM, different pain. |
 | Proposals & Quotes Kit | ₹349 | ₹449 | Priced above the singles because it spans two stages and converts into the Invoice Kit. |
-| Bundle | ₹749 | ₹899 | Anchored on ₹1,146 of singles; best margin per sale. |
+| Retainer & Recurring Revenue Kit | ₹399 | ₹499 | Highest single price: it protects recurring revenue, and the buyer already trusts the invoicing maths. |
+| Bundle | ₹999 | ₹1,199 | Anchored on ₹1,545 of singles at the same ~65% ratio the four-product bundle used. |
 
 Suggested sequence:
 1. List the **Prompt Pack** first — lowest friction, fastest feedback and reviews.
 2. List the **Invoice Kit** next. It is the most complete product here and has the clearest before/after story.
 3. Keep the **CRM** live at ₹299 with the ₹399 strike-through.
 4. List **Proposals** once the Invoice Kit has a review or two — its pitch ends inside the Invoice Kit, so buyers of one are the audience for the other.
-5. Add the **bundle** only after all four are selling, so the "₹1,146 separately" anchor is true.
+5. Add the **Retainer Kit** once the Invoice Kit is selling — its pitch ends on the Invoices tab, so it inherits that product's buyers.
+6. Add the **bundle** only after all five are selling, so the "₹1,545 separately" anchor is true.
 
 After 10 sales, raise the prompt pack to ₹249. Do not discount below ₹199 — it signals the product is worth less than the effort of buying it.
 
 ## Before you go live
 
-1. `./tests/run_tests.sh` — nine suites, all 404 product checks should pass; this also rewrites the "N automated checks" claims on the site from what the suites actually measured
-2. `python3 build_products.py --check` — regenerates and verifies all five ZIPs
+1. `./tests/run_tests.sh` — eleven suites, all 795 product checks should pass; this also rewrites the "N automated checks" claims on the site from what the suites actually measured
+2. `python3 build_products.py --check` — regenerates and verifies all six ZIPs
 3. Set your real store URLs in `site/products.js` (`BUY_LINKS`) — buy buttons say "not added yet" until you do
 4. Replace `hello@leadstack.dev` in `site/*.html` with an inbox you actually read
 5. Push `site/` — the GitHub Action publishes it to Netlify from `main`

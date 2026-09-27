@@ -2,6 +2,10 @@
 const fs = require('fs');
 const vm = require('vm');
 
+// Every setNumberFormat call resolved to concrete cells, so a test can assert the
+// percent landed on the percent row. Reset with everything else.
+const formats = [];
+
 class Range {
   constructor(sheet, a, b, nR, nC) {
     this.s = sheet;
@@ -40,7 +44,18 @@ class Range {
   }
   setValue(v) { return this.setValues([[v]]); }
   setFontWeight() { return this; }
-  setNumberFormat() { return this; }
+  // Apps Script applies a format to the whole addressed block, so record the
+  // exact cells it lands on. Off-by-one row arithmetic in a dashboard is
+  // otherwise invisible in a mock that ignores formats — and it is a real bug:
+  // a percentage rendered with #,##0 shows as 0.
+  setNumberFormat(f) {
+    for (let i = 0; i < this.nR; i++) {
+      for (let j = 0; j < this.nC; j++) {
+        formats.push({ where: this.s.name + '!' + (this.r + i) + ':' + (this.c + j), format: String(f) });
+      }
+    }
+    return this;
+  }
   setFontColor() { return this; }
   getRow() { return this.r; }
   getColumn() { return this.c; }
@@ -156,9 +171,9 @@ const ScriptApp = { getProjectTriggers: () => [], newTrigger: () => ({ timeBased
 
 
 
-module.exports = { Sheet, Book, Range, menus, flattenMenu,
-  get calls(){return {uiCalls, mailCalls, driveFiles};},
-  reset(){ uiCalls.length=0; mailCalls.length=0; driveFiles.length=0; menus.length=0; },
+module.exports = { Sheet, Book, Range, menus, flattenMenu, formats,
+  get calls(){return {uiCalls, mailCalls, driveFiles, formats};},
+  reset(){ uiCalls.length=0; mailCalls.length=0; driveFiles.length=0; menus.length=0; formats.length=0; },
   uiCalls, mailCalls, driveFiles,
   days: baseDays, freezeClock,
   load(src, exports){

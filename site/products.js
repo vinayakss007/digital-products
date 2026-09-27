@@ -6,6 +6,7 @@ window.BUY_LINKS = {
   prompts: null, // "https://vinayakss007.gumroad.com/l/prompt-pack"
   invoice: null, // "https://vinayakss007.gumroad.com/l/invoice-kit"
   proposals: null, // "https://vinayakss007.gumroad.com/l/proposals-kit"
+  retainer: null, // "https://vinayakss007.gumroad.com/l/retainer-kit"
   bundle:  null  // "https://vinayakss007.gumroad.com/l/starter-bundle"
 };
 
@@ -18,11 +19,12 @@ window.CHECK_SUITES = {
   crm: ["test_crm", "e2e_crm"],
   prompts: ["test_prompt_pack"],
   proposals: ["test_proposals", "e2e_proposals"],
-  invoice: ["test_invoice", "e2e_invoice"]
+  invoice: ["test_invoice", "e2e_invoice"],
+  retainer: ["test_retainers", "e2e_retainers"]
 };
 // Everything the catalogue-wide claim covers, including the shared-project test.
 window.CHECK_ALL = ["test_crm", "e2e_crm", "test_invoice", "e2e_invoice", "test_proposals",
-  "e2e_proposals", "test_prompt_pack", "test_bundle_scripts"];
+  "e2e_proposals", "test_retainers", "e2e_retainers", "test_prompt_pack", "test_bundle_scripts"];
 
 // Prices live here so a launch discount is a one-line change.
 window.PRODUCTS = [
@@ -57,6 +59,16 @@ window.PRODUCTS = [
     page: "proposals.html"
   },
   {
+    id: "retainer",
+    icon: "📅",
+    name: "Retainer & Recurring Revenue Kit",
+    tagline: "Bill every retainer on time, catch the overage, spot the client who has gone quiet.",
+    price: 399, was: null,
+    format: "Google Sheets + Apps Script",
+    bullets: ["One click bills every due retainer", "Cannot double-bill a month", "Overage from a plain hours log", "MRR, utilisation and quiet-client alerts"],
+    page: "retainer.html"
+  },
+  {
     id: "invoice",
     icon: "🧾",
     name: "Invoice & Cash-Flow Kit",
@@ -71,7 +83,9 @@ window.PRODUCTS = [
 window.BUNDLE = {
   id: "bundle",
   name: "Solo Business Starter Bundle",
-  tagline: "Get the lead, do the work, send the invoice.",
-  price: 749, was: 1146,
-  includes: ["crm", "prompts", "proposals", "invoice"]
+  tagline: "Get the lead, price it, win it, bill it, and keep billing it.",
+  // Ratio held to the old four-product bundle (~65% of the singles total), so
+  // adding a fifth product did not quietly deepen the discount.
+  price: 999, was: 1545,
+  includes: ["crm", "prompts", "proposals", "invoice", "retainer"]
 };

@@ -1,0 +1,23 @@
+Date,Client,Retainer #,Hours,Note
+2026-08-12,Saffron Coffee Roasters,RET-008,6,Stock cleanup before the retainer ended
+2026-08-20,Northwind Logistics,RET-001,5,Dispatch bug triage
+2026-08-24,Meridian Clinic,RET-004,3,Portal form validation fix — nothing logged here since
+2026-09-03,Northwind Logistics,RET-001,4,Recurring stock-sync job rewrite
+2026-09-04,Delta Structures,RET-003,6,Audit report template rebuild
+2026-09-05,Delta Structures,RET-007,6,Weekly site-check round
+2026-09-07,Saffron Coffee Roasters,RET-002,3,Menu pricing sheet update
+2026-09-09,Northwind Logistics,RET-006,4,Warehouse scanner integration
+2026-09-10,Delta Structures,RET-003,5,Load-bearing calc import
+2026-09-11,Northwind Logistics,RET-001,5,Client-reported sync failure
+2026-09-12,Delta Structures,RET-007,6,Photo evidence upload
+2026-09-14,Saffron Coffee Roasters,RET-002,4,Wholesale price list
+2026-09-15,Northwind Logistics,RET-001,4,Depot dashboard filter
+2026-09-16,Delta Structures,RET-012,5,Typo in the retainer number — reconcile should catch this
+2026-09-17,Delta Structures,RET-003,4,Drawing-list migration
+2026-09-18,Northwind Logistics,RET-001,3,Handover notes for the ops team
+2026-09-19,Delta Structures,RET-007,6,Inspection checklist rebuild
+2026-09-21,Saffron Coffee Roasters,RET-002,5,Café wifi portal copy
+2026-09-22,Northwind Logistics,RET-001,5,Unplanned: data recovery after their migration
+2026-09-23,Northwind Logistics,RET-006,5,Scanner firmware issue
+2026-09-24,Delta Structures,RET-003,7,Site visit and measurements
+2026-09-25,Northwind Logistics,RET-001,1,Fix verification

@@ -1,0 +1,49 @@
+RETAINER & RECURRING REVENUE KIT — QUICK START
+==============================================
+
+1. sheets.new                        -> create an empty spreadsheet
+2. Extensions -> Apps Script         -> paste retainer_script.gs -> save
+3. Reload the sheet                  -> a "Retainers" menu appears
+4. Menu -> Run Setup (once)          -> creates Retainers, Retainer Hours, Clients,
+                                       Retainer Activities, Retainer Dashboard, Settings
+5. Fill the Settings tab             -> your business name, email, currency, tax rate,
+                                       payment terms, how many days of silence counts as
+                                       a churn signal, how long a renewal runs for
+6. Add clients on the Clients tab    -> name must match exactly how you type it later
+
+SET UP A RETAINER
+7.  Menu -> New Retainer             -> auto-numbered RET-001, dated today
+8.  Fill the row: client, monthly fee, included hours, overage rate/hr, tax %,
+    billing day (1-28), status. End date is optional — leave it blank for open-ended.
+9.  Log work on the Retainer Hours tab: Date | Client | Retainer # | Hours | Note
+    (or select the retainer -> ➕ Add Hours Row For Selected)
+
+BILL THE MONTH
+10. Menu -> 🧾 Bill Due Retainers    (run it on the 1st, or on your billing day)
+    One draft invoice per due retainer, overage included, written to the Invoices tab.
+    Run it twice in the same month and the second run bills nothing — each row is
+    stamped with the period it was billed for.
+
+ANY TIME
+    Menu -> 📊 Refresh Dashboard     -> MRR, unbilled & due, overage, utilisation,
+                                        renewals inside 30 days, quiet clients
+    Menu -> 🔄 Recalculate Selected  -> the exact money for one retainer, and why it
+                                        is or is not billable this month
+    Menu -> 🔎 Reconcile Hours Log   -> finds hours rows that will never bill
+    Menu -> 🔁 Renew Selected Retainer
+    Menu -> ⏱ Mark Ended Retainers Expired
+    Menu -> ⏰ Install Daily Billing Email -> 9am note listing what is due, coming due,
+                                        ending, and gone quiet
+
+TUNING
+    Settings -> "Silence Alert (days)" is your churn trigger. 21 days is the default;
+    a weekly-retainer client should be lower, a monthly-check-in client higher.
+    Settings -> "Renewal Length (months)" controls how far 🔁 Renew pushes the end date.
+    Edit RR_BILLABLE_STATUS in the script if "Paused" should still be billed.
+
+Want the demo dashboard first? Paste retainers_sample.csv into the Retainers tab and
+hours_sample.csv into the Retainer Hours tab (starting at A1, replacing the headers),
+then Refresh Dashboard. The samples are dated against 27 Sep 2026, so the figures match
+the screenshots.
+
+Need help? Full guide in README.md, including what this kit does not do.

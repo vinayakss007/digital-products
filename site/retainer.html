@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retainer &amp; Recurring Revenue Kit — Bill Every Retainer On Time | LeadStack</title>
+  <meta name="description" content="One click turns every due retainer into a correctly-priced draft invoice, including overage hours. It cannot double-bill a month, and it tells you which client has quietly stopped using the cover. No subscription.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Lead<span>Stack</span></a>
+      <div class="nav-links"><a href="index.html#products">All products</a><a href="index.html#bundle">Bundle</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="index.html">Products</a> / Retainer &amp; Recurring Revenue Kit</div>
+      <div class="hero-badge">📅 Recurring billing inside Google Sheets</div>
+      <h1>A missed retainer invoice isn't a late payment.<br><em>It's a month of work you never asked to be paid for.</em></h1>
+      <p>Keep every monthly retainer on file — fee, included hours, overage rate, billing day. One click bills everything that is due, overage and tax included, as draft invoices you approve. It will not bill the same month twice, and it tells you which client hasn't logged an hour in 34 days.</p>
+      <div data-price="retainer"></div>
+      <div class="cta-row" style="margin-top:8px"><div data-buy="retainer"></div></div>
+      <div class="assure">Instant download · One-time payment · No billing-software subscription</div>
+    </div>
+  </header>
+
+  <section class="alt">
+    <div class="container">
+      <h2>The month, start to finish</h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><div><h4>New Retainer</h4><p>Numbered RET-001, 002, … dated today, with your Settings defaults already filled in — included hours, overage rate, tax, billing day.</p></div></div>
+        <div class="step"><div class="n">2</div><div><h4>Log hours as you go</h4><p>One row per entry: date, client, retainer number, hours. Nothing else. This is not a timesheet — it exists to work out what you're allowed to bill.</p></div></div>
+        <div class="step"><div class="n">3</div><div><h4>Bill Due Retainers</h4><p>Every retainer that is due gets a Draft invoice on the Invoices tab: <code>Monthly retainer — 2026-09 | 1 | 85000</code> plus <code>Overage: 2h beyond 20h | 2 | 4500</code>. Total for that one: ₹1,10,920.</p></div></div>
+        <div class="step"><div class="n">4</div><div><h4>Run it again tomorrow</h4><p>Nothing happens. Each row is stamped with the period it was billed for, and the report names that stamp as the reason. The guard is on the data, not on your memory.</p></div></div>
+        <div class="step"><div class="n">5</div><div><h4>Send them</h4><p>They land on the same Invoices tab the Invoice Kit PDFs and chases. If it isn't installed, they are still plain correct invoice rows.</p></div></div>
+        <div class="step"><div class="n">6</div><div><h4>9am, every day</h4><p>One email: what is due and unbilled, what comes due within 3 days, what ends within 30, and which client has gone quiet. Close it and nothing else happens.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What the sheet knows that a "Monthly Retainers" list doesn't</h2>
+      <div class="two-col">
+        <div class="demo-card"><div class="label">📊 Dashboard (real output from the shipped sample)</div>
+<pre>Retainers In Force             6
+Monthly Recurring      ₹4,20,000
+Billed This Period             1
+Unbilled &amp; Due Now     ₹3,79,960
+Overage Billable         ₹17,000
+Average Utilisation         70.4%
+Revenue At Risk         ₹1,00,000
+
+8 marked Active — 1 past their end date</pre></div>
+        <div class="demo-card"><div class="label">🧾 One invoice, as the billing run wrote it</div>
+<pre>INV-0001 · Northwind Logistics
+Draft · due 04 Oct 2026 · INR
+
+Monthly retainer — 2026-09
+                        1 × ₹85,000
+Overage: 2h beyond 20h
+                        2 × ₹4,500
+
+          Subtotal       ₹94,000.00
+          Tax (18%)      ₹16,920.00
+          TOTAL         ₹1,10,920.00
+
+Note: Retainer RET-001 — 2026-09
+      (includes 2h overage)</pre></div>
+        <div class="demo-card"><div class="label">📧 The 9am email</div>
+<pre>Subject: Retainers: 4 unbilled,
+         2 at risk
+
+DUE AND UNBILLED — run Bill Due
+  RET-001 · Northwind · ₹1,10,920
+          (incl. 2h overage)
+  RET-003 · Delta     · ₹1,41,600
+  RET-004 · Meridian  ·  ₹70,800
+  RET-007 · Delta     ·  ₹56,640
+
+COMING DUE WITHIN 3 DAYS
+  RET-002 · due on day 28
+
+ENDING WITHIN 30 DAYS
+  RET-007 · ends in 18d · ₹40,000/mo
+
+NO RECENT HOURS — QUIET CHURN
+  RET-004 · 34d since last entry
+                     · ₹60,000/mo</pre></div>
+        <div class="demo-card"><div class="label">🔎 The boring run that saves you money</div>
+<pre>Nothing billed
+
+Why each one was skipped:
+  RET-002 — not due until day 28
+  RET-005 — paused, not billable
+  RET-006 — already billed for
+            2026-09
+  RET-008 — ended 2026-08
+  RET-009 — starts 2026-10,
+            not this month</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <h2>The decisions baked into it</h2>
+      <div class="features">
+        <div class="feature"><div class="icon">🔁</div><h3>One month, one invoice</h3><p>The retainer row carries the period it was last billed for. Run the billing twice and the second run bills nothing — and says exactly that, per row.</p></div>
+        <div class="feature"><div class="icon">⏱</div><h3>Billing day, not just "the 1st"</h3><p>Half your clients pay on the 1st, half on the 28th. Each row holds its own day, so a mid-month run bills only what is actually due — and the email says what's coming within 3 days.</p></div>
+        <div class="feature"><div class="icon">📈</div><h3>Overage you can defend</h3><p>Promised 20h, logged 22h → the invoice shows the 2h and the rate. Log 22h against a 40h deal and it bills nothing extra and shows 55% utilisation, which is the conversation you should be having instead.</p></div>
+        <div class="feature"><div class="icon">🔓</div><h3>MRR that isn't inflated</h3><p>A retainer that ended on 31 Aug or starts in October is real, but it isn't this month's recurring revenue. In force means live: 6 of the 8 rows marked Active, ₹4,20,000 not ₹5,00,000.</p></div>
+        <div class="feature"><div class="icon">🤫</div><h3>Quiet, not churned</h3><p>The client who stops emailing you isn't a red flag in a CRM — they're ₹60,000 a month walking away. Days since the last logged hour is the earliest honest signal you have.</p></div>
+        <div class="feature"><div class="icon">🧩</div><h3>It knows what it isn't</h3><p>Not a timesheet, not a payment processor, not GST advice, and it won't chase the client who hasn't paid. It bills the retainer; the Invoice Kit chases the money.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What you get</h2>
+      <div class="two-col" style="max-width:720px;margin:0 auto">
+        <div class="demo-card"><div class="label">📦 In the download</div>
+<pre>retainer_script.gs    the whole tool
+retainers_sample.csv  9 retainers, each one
+                      demonstrating a rule —
+                      including the row that
+                      tests the double-billing
+                      guard
+hours_sample.csv      22 entries, with one
+                      deliberate typo to catch
+clients_sample.csv    5 clients, GSTIN included
+README.md             setup, maths, limits
+QUICKSTART.txt        one page, numbered</pre></div>
+        <div class="demo-card"><div class="label">🧠 What it assumes</div>
+<pre>A Google account. Nothing else.
+
+Works alone. Installed alongside the CRM,
+Invoice Kit and Proposals Kit in one
+spreadsheet, it shares the client list,
+writes to the same Invoices tab, and keeps
+its own dashboard and its own Settings rows —
+so a retainer can go quote → invoice →
+recurring billing without retyping a name.</pre></div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:14.5px;margin-top:26px">
+        <span data-checks="retainer">366</span> automated checks cover the billable/not-billable rules, overage and tax maths, the double-billing guard, hours reconciliation, renewals and the shipped sample data run end to end.
+      </p>
+    </div>
+  </section>
+
+  <section class="alt buy">
+    <div class="container">
+      <h2>Get the Retainer Kit</h2>
+      <div data-price="retainer"></div>
+      <div data-buy="retainer"></div>
+      <div class="assure">₹399 once. One retainer you forgot to bill pays for it eleven times over.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="index.html">All products</a> · <a href="mailto:hello@leadstack.dev">Pre-sale questions</a></p>
+      <p style="margin-top:8px">© <span data-year>2026</span> LeadStack Templates</p>
+    </div>
+  </footer>
+  <script src="products.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

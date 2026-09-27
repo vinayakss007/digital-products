@@ -37,9 +37,9 @@ function setupTemplate() {
     }
   });
 
-  // Settings defaults — upserted, because bundle installs share this tab with
-  // the Invoice Kit and Proposals Kit; clearing it would wipe their config.
-  upsertSettings_({
+  // Settings defaults — seeded only, because bundle installs share this tab with
+  // the other kits; a Setup run must not blank config someone already filled in.
+  seedSettings_({
     'Your Email': Session.getActiveUser().getEmail(),
     'Default Follow-up Days': '3',
     'Sales Target (Monthly ₹)': '500000',
@@ -234,7 +234,7 @@ function settingsMap_() {
   return out;
 }
 
-function upsertSettings_(defaults) {
+function seedSettings_(defaults) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName('Settings');
   if (!sheet) sheet = ss.insertSheet('Settings');
@@ -242,13 +242,20 @@ function upsertSettings_(defaults) {
     sheet.getRange('A1:B1').setValues([['Setting', 'Value']]).setFontWeight('bold');
   }
   const at = {};
+  const filled = {};
   sheet.getDataRange().getValues().slice(1).forEach((r, i) => {
     const key = String(r[0]).trim();
-    if (key) at[key] = i + 2;
+    if (!key) return;
+    at[key] = i + 2;
+    // A key that already holds something belongs to the user or to another kit.
+    if (String(r[1] === null || r[1] === undefined ? '' : r[1]).trim() !== '') filled[key] = true;
   });
+  // Seed, never overwrite: this tab is shared in bundle installs, so a second
+  // kit's Setup used to blank the first one's GSTIN, address and email. A key
+  // left empty is fair game — that is a placeholder waiting to be filled.
   Object.keys(defaults).forEach(key => {
-    if (at[key]) sheet.getRange(at[key], 2).setValue(defaults[key]);
-    else sheet.appendRow([key, defaults[key]]);
+    if (!at[key]) sheet.appendRow([key, defaults[key]]);
+    else if (!filled[key]) sheet.getRange(at[key], 2).setValue(defaults[key]);
   });
 }
 
@@ -373,13 +380,14 @@ function crmMenu_(ui) {
 // ─── MENU HOOK ──────────────────────────────────────────────────────────────
 // Apps Script keeps only ONE onOpen per project, so this block is identical in
 // every LeadStack script: whichever file loads last wins, and it builds every
-// menu whose builder exists. Install one product or all three — the menus are
+// menu whose builder exists. Install one product or all four — the menus are
 // correct either way.
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   if (typeof crmMenu_ === 'function') crmMenu_(ui);
   if (typeof invoiceKitMenu_ === 'function') invoiceKitMenu_(ui);
   if (typeof proposalKitMenu_ === 'function') proposalKitMenu_(ui);
+  if (typeof retainerKitMenu_ === 'function') retainerKitMenu_(ui);
 }
 
 // ─── INSTALL — Run once to set up trigger ─────────────────────────────────

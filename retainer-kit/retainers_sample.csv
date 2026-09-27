@@ -1,0 +1,10 @@
+Retainer #,Client,Start,End (optional),Monthly Fee,Included Hours,Overage Rate / hr,Tax %,Billing Day,Status,Last Billed Period,Notes
+RET-001,Northwind Logistics,2026-02-01,,85000,20,4500,18,1,Active,2026-08,"Inventory platform support. Scope keeps landing on this retainer instead of a new proposal — that is what the overage line is for."
+RET-002,Saffron Coffee Roasters,2026-05-01,,45000,12,3500,18,28,Active,2026-08,"Billed on the 28th. Logged exactly the included hours this month, so no overage to add."
+RET-003,Delta Structures,2026-01-15,,120000,40,5000,18,1,Active,2026-08,"Structural audit tooling. 22h logged against 40h included — expensive cover, thin usage."
+RET-004,Meridian Clinic,2026-03-01,,60000,15,4000,18,1,Active,2026-08,"Patient portal upkeep. Nobody has logged anything here since 24 Aug."
+RET-005,Kite & Co Studio,2026-06-01,,30000,10,3000,18,5,Paused,2026-07,"Paused while they redesign internally. Must not appear in any billing run or nag email."
+RET-006,Northwind Logistics,2026-04-01,,70000,20,4500,18,1,Active,2026-09,"Second retainer, already billed this period. The double-billing guard is for this row."
+RET-007,Delta Structures,2026-04-01,2026-10-15,40000,16,4000,18,1,Active,2026-08,"Fixed-term cover ending 15 Oct — renew it or let it lapse, but decide by then."
+RET-008,Saffron Coffee Roasters,2026-02-01,2026-08-31,25000,8,3000,18,1,Active,2026-08,"Ended on 31 Aug and nobody changed the status. Still counted as active until you run ⏱ Mark Ended Retainers Expired."
+RET-009,Kite & Co Studio,2026-10-01,,55000,15,3800,18,1,Active,,"Signed but not started until October — should not be billable yet."

@@ -40,6 +40,8 @@ function render(buyLinks) {
   return slots;
 }
 
+// Read from the real config so the card count is not a number to keep in sync.
+function win0() { return readProducts().PRODUCTS; }
 function readProducts() {
   const w = {};
   vm.runInContext(SITE('products.js'), vm.createContext({ window: w }));
@@ -56,15 +58,15 @@ console.log('=== unwired store (fresh clone state) ===');
 const a = render();
 const cards = (a['[data-products]'].innerHTML.match(/class="card"/g) || []).length;
 const prodCount = JSON.parse(JSON.stringify({})); // placeholder
-t('catalogue renders one card per product', cards === 4, 'got ' + cards);
+t('catalogue renders one card per product', cards === win0().length, 'got ' + cards);
 t('bundle is not duplicated in the product grid', !/🧰/.test(a['[data-products]'].innerHTML));
 t('bundle renders in its own slot', /🧰/.test(a['[data-bundle]'].innerHTML));
 const names = ['CRM &amp; Sales Tracker Template', 'Small Business Prompt Pack',
-  'Proposals &amp; Quotes Kit', 'Invoice &amp; Cash-Flow Kit'];
+  'Proposals &amp; Quotes Kit', 'Retainer &amp; Recurring Revenue Kit', 'Invoice &amp; Cash-Flow Kit'];
 t('all product names appear, ampersands encoded', names.every(n => a['[data-products]'].innerHTML.includes(n)));
 t('no raw & left in interpolated names', !/<h3>[^<]*&[^a]/.test(a['[data-products]'].innerHTML),
   (a['[data-products]'].innerHTML.match(/<h3>[^<]*<\/h3>/g) || []).join(' '));
-t('detail pages are linked', ['crm.html', 'prompt-pack.html', 'proposals.html', 'invoice-kit.html'].every(p => a['[data-products]'].innerHTML.includes(p)));
+t('detail pages are linked', ['crm.html', 'prompt-pack.html', 'proposals.html', 'retainer.html', 'invoice-kit.html'].every(p => a['[data-products]'].innerHTML.includes(p)));
 
 const bundleHtml = a['[data-bundle]'].innerHTML + a['[data-price]'].innerHTML;
 // Asserted against the config the pages actually render from, so a price change is

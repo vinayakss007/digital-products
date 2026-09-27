@@ -85,15 +85,17 @@ Works with or without the Invoice Kit installed — if the Invoices tab doesn't 
 this creates it with the right headers.
 
 ## Installing Alongside The Other LeadStack Products
-The three scripts are built to be pasted into **one** Apps Script project:
+The four spreadsheet scripts are built to be pasted into **one** Apps Script project:
 - Every internal helper here is prefixed `pr_`, so nothing collides.
 - Apps Script only allows a single `onOpen`, so each file ships an identical composing
-  `onOpen`. Whichever loads last builds all three menus. No product's menu can steal the
-  name, and it is tested.
-- **Settings** is a shared key/value tab. Each kit upserts its own rows, so running all
-  three setups leaves every setting present instead of the last one wiping the others.
+  `onOpen`. Whichever loads last builds every menu whose builder exists. No product's menu
+  can steal the name, and it is tested.
+- **Settings** is a shared key/value tab. Each kit only *seeds* its own rows: a key that
+  already holds a value is left alone. Running all four setups leaves every setting present
+  and keeps the GSTIN and address you typed for the Invoice Kit.
 - Each product writes its own dashboard: **Dashboard** (CRM), **Cash Flow** (Invoice
-  Kit), **Proposal Dashboard** (this). No two products clear the same tab.
+  Kit), **Proposal Dashboard** (this), **Retainer Dashboard** (Retainer Kit). No two
+  products clear the same tab.
 - **Clients** and **Invoices** are genuinely shared with the Invoice Kit, deliberately —
   same columns, so you don't maintain the customer list twice.
 

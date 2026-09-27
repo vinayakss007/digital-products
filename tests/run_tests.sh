@@ -17,7 +17,7 @@ write_counts() {
   printf '{\n  "note": "written by tests/run_tests.sh after each suite; the marketing claim in site/products.js must match these",\n  "total": %s,\n  "suites": {%s}\n}\n' \
     "$TOTAL" "${SUITES%,}" > "$COUNTS"
 }
-for suite in test_crm test_invoice test_proposals test_prompt_pack e2e_crm e2e_invoice e2e_proposals test_bundle_scripts storefront.test; do
+for suite in test_crm test_invoice test_proposals test_retainers test_prompt_pack e2e_crm e2e_invoice e2e_proposals e2e_retainers test_bundle_scripts storefront.test; do
   printf '\n\033[1m── %s ──\033[0m\n' "$suite"
   # Before the storefront is verified, stamp the counts measured so far into the
   # "N automated checks" claims on the pages. The test then checks the literal
