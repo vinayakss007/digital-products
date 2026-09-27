@@ -19,7 +19,7 @@ function fresh(leadRows) {
     ['Currency','INR'],['Company Name','Co'],['Auto-Reminder Enabled','TRUE'],['Reminder Time (24h)','09:00']
   ]);
   const L = b.sheets.Leads;
-  L.getRange(1, 1, 1, 17).setValues([[Array(17).fill(0).map((_, i) => 'c' + i)]]);
+  L.getRange(1, 1, 1, 17).setValues([Array.from({ length: 17 }, (_, i) => 'c' + i)]);
   leadRows.forEach((r, i) => L.getRange(i + 2, 1, 1, r.length).setValues([r]));
   M.setBook(b);
   return b;

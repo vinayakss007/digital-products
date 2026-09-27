@@ -53,11 +53,12 @@ When money lands, select the row and run **6. Mark Row as Paid**. It stamps the 
 status, and appends to the Payments tab.
 
 ### Step 7 — Watch cash flow
-**Refresh Cash-Flow Summary** rebuilds a Dashboard tab: collected, outstanding, not-yet-due, and
+**Refresh Cash-Flow Summary** rebuilds the Cash Flow tab: collected, outstanding, not-yet-due, and
 overdue split into 1–30 / 31–60 / 60+ days, plus a month-by-month invoiced-vs-collected table.
 **Chase Overdue Payments** drafts a reminder for everything late.
 
-To get an email every morning at 9am listing overdue and soon-due invoices, open Apps Script →
+To get an email every morning at 9am listing overdue and soon-due invoices, use the menu
+item **Install Daily Overdue Email**. If you prefer to do it by hand instead: Apps Script →
 Triggers → Add Trigger → `dailyOverdueCheck` → Time-driven → Day timer.
 
 ## Changing Things

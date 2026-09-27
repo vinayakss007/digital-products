@@ -45,19 +45,26 @@ PRODUCTS = {
         "price": 299,
         "include": ["README.md", "Sheet1_Leads.csv", "crm_script.gs", "QUICKSTART.txt"],
     },
+    "proposals-kit": {
+        "title": "Proposals & Quotes Kit",
+        "folder": "proposals-kit",
+        "zip_name": "Proposals-Quotes-Kit.zip",
+        "price": 349,
+        "include": None,
+    },
     "bundle": {
         "title": "Solo Business Starter Bundle",
         "folder": None,  # assembled from the other products
         "zip_name": "Solo-Business-Starter-Bundle.zip",
-        "price": 599,
-        "members": ["prompt-pack", "invoice-kit", "crm-template"],
+        "price": 749,
+        "members": ["prompt-pack", "invoice-kit", "proposals-kit", "crm-template"],
     },
 }
 
 BUNDLE_README = """Solo Business Starter Bundle
 ===========================
 
-Three tools that cover the full loop: get the lead, do the work, get paid.
+Four tools that cover the whole loop: find the lead, price the work, win it, get paid.
 
 1. CRM & Sales Tracker Template
    Leads, pipeline stages, follow-up reminders, revenue dashboard.
@@ -67,11 +74,23 @@ Three tools that cover the full loop: get the lead, do the work, get paid.
    120 prompts + 6 personas for the writing tasks around the work.
    Open prompt-pack/README.md
 
-3. Invoice & Cash-Flow Kit
+3. Proposals & Quotes Kit
+   Scope in, priced PDF out, deposit calculated, accepted deal turned into an invoice.
+   Open proposals-kit/README.md
+
+4. Invoice & Cash-Flow Kit
    PDF invoices from Google Sheets, plus who-owes-me-what tracking.
    Open invoice-kit/README.md
 
 Start with whichever one hurts most today. Each works alone.
+
+IF YOU INSTALL MORE THAN ONE IN THE SAME SPREADSHEET
+The three Apps Script files are written to share one project: no name collisions, one
+menu each, a shared Settings tab that is merged rather than overwritten, and separate
+output tabs (Dashboard / Cash Flow / Proposal Dashboard). Proposals also converts an
+accepted quote straight into an invoice draft once the Invoice Kit is installed.
+
+Order that fits most people: CRM -> Proposals -> Invoice Kit.
 
 Every file here is yours to modify. Do not resell the pack itself.
 """

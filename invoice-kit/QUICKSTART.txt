@@ -24,7 +24,6 @@ ANY TIME
     Menu -> Chase Overdue Payments      -> copy-paste reminder text
 
 OPTIONAL: daily 9am email about overdue invoices
-    Apps Script -> Triggers -> Add Trigger
-    function: dailyOverdueCheck  event: Time-driven, Day timer
+    Menu -> Install Daily Overdue Email   (that's all it takes)
 
 Need help? Full guide in README.md, step 5 covers line-item formatting.

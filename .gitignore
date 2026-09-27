@@ -8,3 +8,4 @@ wp-cli.phar
 sqlite-integration/
 sqlite-integration.1.8.1.zip
 wordpress/
+tests/check-count.json

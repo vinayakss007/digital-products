@@ -1,6 +1,10 @@
 // Drives the shipped CRM sample CSV through crm_script.gs and asserts the
 // dashboard and reminder email match what the listing promises.
 const M=require('./mock.js'); const {Sheet,Book}=M; const fs=require('fs');
+// Sample lead dates are fixed in Sheet1_Leads.csv, so pin the clock to the
+// day they were generated for. Without this, the suite starts failing on its
+// own anniversary rather than on a real regression.
+M.freezeClock('2026-09-27');
 const api=M.load('../crm-template/crm_script.gs',
  ['CONFIG','setupTemplate','checkFollowUps','updateDashboard','isOpenLead']);
 function parseCSV(t){const rows=[];let f=[],c='',q=false;for(let i=0;i<t.length;i++){const ch=t[i];

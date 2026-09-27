@@ -37,20 +37,17 @@ function setupTemplate() {
     }
   });
 
-  // Settings defaults
-  const settings = ss.getSheetByName('Settings');
-  settings.clear();
-  settings.getRange('A1:B1').setValues([['Setting', 'Value']]);
-  settings.getRange('A2:B8').setValues([
-    ['Your Email', Session.getActiveUser().getEmail()],
-    ['Default Follow-up Days', '3'],
-    ['Sales Target (Monthly ₹)', '500000'],
-    ['Currency', 'INR'],
-    ['Company Name', 'Your Company'],
-    ['Auto-Reminder Enabled', 'TRUE'],
-    ['Reminder Time (24h)', '09:00']
-  ]);
-  settings.getRange('A1:B1').setFontWeight('bold');
+  // Settings defaults — upserted, because bundle installs share this tab with
+  // the Invoice Kit and Proposals Kit; clearing it would wipe their config.
+  upsertSettings_({
+    'Your Email': Session.getActiveUser().getEmail(),
+    'Default Follow-up Days': '3',
+    'Sales Target (Monthly ₹)': '500000',
+    'Currency': 'INR',
+    'Company Name': 'Your Company',
+    'Auto-Reminder Enabled': 'TRUE',
+    'Reminder Time (24h)': '09:00'
+  });
 
   // Pipeline stage config
   const pipeline = ss.getSheetByName('Pipeline');
@@ -82,11 +79,10 @@ function isOpenLead(status) {
 // ─── DAILY FOLLOW-UP CHECK ────────────────────────────────────────────────
 function checkFollowUps() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const settings = ss.getSheetByName(CONFIG.settingsSheet);
-  const enabled = settings.getRange('A7:B7').getValues()[0][1];
-  if (enabled.toString().toUpperCase() !== 'TRUE') return;
+  const settings = settingsMap_();
+  if (String(settings['Auto-Reminder Enabled'] || '').toUpperCase() !== 'TRUE') return;
 
-  const userEmail = settings.getRange('A2:B2').getValues()[0][1];
+  const userEmail = settings['Your Email'] || Session.getActiveUser().getEmail();
   const sheet = ss.getSheetByName(CONFIG.leadsSheet);
   const data = sheet.getDataRange().getValues();
   
@@ -226,6 +222,36 @@ function updateDashboard() {
 }
 
 // ─── LOG ACTIVITY ─────────────────────────────────────────────────────────
+// Settings is now a shared, order-independent key/value tab, so read it by key.
+function settingsMap_() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.settingsSheet);
+  const out = {};
+  if (!sheet || sheet.getLastRow() < 2) return out;
+  sheet.getDataRange().getValues().slice(1).forEach(r => {
+    const key = String(r[0]).trim();
+    if (key) out[key] = r[1];
+  });
+  return out;
+}
+
+function upsertSettings_(defaults) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName('Settings');
+  if (!sheet) sheet = ss.insertSheet('Settings');
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange('A1:B1').setValues([['Setting', 'Value']]).setFontWeight('bold');
+  }
+  const at = {};
+  sheet.getDataRange().getValues().slice(1).forEach((r, i) => {
+    const key = String(r[0]).trim();
+    if (key) at[key] = i + 2;
+  });
+  Object.keys(defaults).forEach(key => {
+    if (at[key]) sheet.getRange(at[key], 2).setValue(defaults[key]);
+    else sheet.appendRow([key, defaults[key]]);
+  });
+}
+
 function logActivity(leadId, action, notes) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName(CONFIG.activitiesSheet);
@@ -260,8 +286,7 @@ function moveToStage(leadRow, newStage) {
   
   // Auto-update status
   const now = new Date();
-  const settings = ss.getSheetByName(CONFIG.settingsSheet);
-  const defaultDays = Number(settings.getRange('A3:B3').getValues()[0][1] || 3);
+  const defaultDays = Number(settingsMap_()['Default Follow-up Days'] || 3);
   const nextFollowUp = new Date(now);
   nextFollowUp.setDate(nextFollowUp.getDate() + defaultDays);
   
@@ -323,9 +348,8 @@ function logNoteForSelected() {
   updateDashboard();
 }
 
-// ─── MENU — Adds custom menu on open ──────────────────────────────────────
-function onOpen() {
-  const ui = SpreadsheetApp.getUi();
+// ─── MENU — builder called by the shared onOpen hook below ────────────────
+function crmMenu_(ui) {
   ui.createMenu('📊 CRM Tools')
     .addItem('🔄 Update Dashboard', 'updateDashboard')
     .addItem('📝 Log Activity For Selected Lead', 'logNoteForSelected')
@@ -344,6 +368,18 @@ function onOpen() {
     .addItem('⏰ Install Daily Reminder Trigger', 'installTrigger')
     .addItem('⚙️ Run Setup (once)', 'setupTemplate')
     .addToUi();
+}
+
+// ─── MENU HOOK ──────────────────────────────────────────────────────────────
+// Apps Script keeps only ONE onOpen per project, so this block is identical in
+// every LeadStack script: whichever file loads last wins, and it builds every
+// menu whose builder exists. Install one product or all three — the menus are
+// correct either way.
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  if (typeof crmMenu_ === 'function') crmMenu_(ui);
+  if (typeof invoiceKitMenu_ === 'function') invoiceKitMenu_(ui);
+  if (typeof proposalKitMenu_ === 'function') proposalKitMenu_(ui);
 }
 
 // ─── INSTALL — Run once to set up trigger ─────────────────────────────────

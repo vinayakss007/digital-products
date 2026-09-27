@@ -1,0 +1,40 @@
+PROPOSALS & QUOTES KIT — QUICK START
+====================================
+
+1. sheets.new                        -> create an empty spreadsheet
+2. Extensions -> Apps Script         -> paste proposal_script.gs -> save
+3. Reload the sheet                  -> a "Proposals" menu appears
+4. Menu -> Run Setup (once)          -> creates Proposals, Clients, Proposal Stages,
+                                       Proposal Activities, Proposal Dashboard, Settings
+5. Fill the Settings tab             -> your business name, address, email, GSTIN,
+                                       tax rate, deposit %, how long a price holds
+6. Add clients on the Clients tab    -> name must match exactly how you type it later
+
+SEND A PROPOSAL
+7.  Menu -> New Draft Proposal       -> auto-numbered, expiry date from your Settings
+8.  Type the client name, then the scope in one cell, one line per item:
+        Website build | 40 | 1500
+        Two revision rounds | 2 | 12000
+9.  Menu -> Recalculate Totals       -> subtotal, tax, total, deposit
+10. Menu -> Create PDF in Drive      (or Email Proposal With PDF to send it now)
+
+WHEN THEY SAY YES
+11. Select the row -> Menu -> Move To Stage -> Accepted
+12. Menu -> Convert Accepted Proposal To Invoice
+    (bills the deposit only, at 0% tax — the balance goes on the next invoice)
+
+ANY TIME
+    Menu -> Refresh Dashboard            -> open value, weighted pipeline, win rate
+    Menu -> Chase Selected Proposal      -> reminder email that does not discount first
+    Menu -> Mark Lapsed Proposals Expired
+    Menu -> Install Daily Expiry Email   -> 9am note listing what is about to die
+
+TUNING
+    Proposal Stages tab -> change "Win Chance (%)" to fit how you actually close.
+    Draft rows are never chased; only Sent / Follow-up / Negotiating appear in the
+    expiry email.
+
+Want the demo dashboard first? Paste proposals_sample.csv into the Proposals tab
+(starting at A1, replacing the headers), then Refresh Dashboard.
+
+Need help? Full guide in README.md, including what this kit does not do.

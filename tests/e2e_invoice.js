@@ -2,6 +2,9 @@
 // dashboard, the PDF HTML and the next invoice number.
 const M=require('./mock.js'); const {Sheet,Book}=M;
 const fs=require('fs');
+// The shipped invoice samples are dated against 2026-09-27; pin the clock so
+// the aging buckets and the sales-page demo figures cannot drift apart.
+M.freezeClock('2026-09-27');
 const api=M.load('../invoice-kit/invoice_script.gs',
  ['CFG','refreshSummary','rowValues_','classify_','getSettings_','invoiceDataFromRow_','buildInvoiceHtml_','parseItems_','recalcRow_','chaseEmail','dailyOverdueCheck','createDraftInvoice','nextInvoiceNumber_','setupKit']);
 
@@ -26,7 +29,7 @@ console.log('=== sample data loads into the real script ===');
 const rows=api.rowValues_(b.sheets.Invoices);
 eq('all 8 invoices parsed',rows.length,8);
 eq('client rows parsed',api.clientFor_ ? 'n/a':'n/a','n/a');
-const buckets=rows.map(o=>api.classify_(o.v,new Date()));
+const buckets=rows.map(o=>api.classify_(o.v,M.days(0)));
 console.log('  aging:',JSON.stringify(buckets));
 eq('INV-0001 paid',buckets[0],'collected');
 eq('INV-0003 60+ late',buckets[2],'over3');
@@ -45,7 +48,7 @@ rows.forEach((o,i)=>{const r=api.recalcRow_(o.row);
 
 console.log('=== dashboard from shipped data ===');
 api.refreshSummary();
-const D=b.getSheetByName('Dashboard'); const g={};
+const D=b.getSheetByName('Cash Flow'); const g={};
 for(let r=1;r<=D.getLastRow();r++) g[String(D.get(r,1))]=[D.get(r,2),D.get(r,3)];
 const wantColl=241900+85000, wantOut=67024+129800+141600+63720+54044;
 eq('collected',Number(g['Collected'][0]),wantColl);

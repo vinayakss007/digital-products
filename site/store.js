@@ -53,6 +53,8 @@
       "</div></div>";
   }
 
+  var words = { 2: "two", 3: "three", 4: "four", 5: "five", 6: "six" };
+
   function bundleCard() {
     var b = window.BUNDLE;
     if (!b) return "";
@@ -63,7 +65,7 @@
     return '<div class="card" style="border-color:#3f3f46">' +
       '<div class="icon">🧰</div><h3>' + esc(b.name) + "</h3>" +
       '<div class="tag">' + esc(b.tagline) + "</div>" +
-      '<div class="fmt">All three products, separate downloads</div>' +
+      '<div class="fmt">All ' + words[(b.includes || []).length] + ' products, separate downloads</div>' +
       "<ul>" + items + "</ul>" + priceRow(b) +
       '<div class="cta-row" style="justify-content:flex-start">' +
       buyButton(b.id, "Buy the bundle") + "</div></div>";
@@ -95,6 +97,12 @@
     });
     var yr = document.querySelector("[data-year]");
     if (yr) yr.textContent = new Date().getFullYear();
+
+    // Keeps "Bundle and save ₹X" honest when a price changes in products.js.
+    document.querySelectorAll("[data-save]").forEach(function (el) {
+      var b = window.BUNDLE;
+      if (b && b.was > b.price) el.textContent = "Bundle and save " + inr(b.was - b.price);
+    });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);

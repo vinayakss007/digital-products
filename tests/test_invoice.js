@@ -192,7 +192,7 @@ const rows = [
 ];
 rows.forEach((r, i) => I.getRange(i + 2, 1, 1, 13).setValues([r]));
 api.refreshSummary();
-const D = b.getSheetByName('Dashboard');
+const D = b.getSheetByName('Cash Flow');
 const flat = [];
 for (let r = 1; r <= D.getLastRow(); r++) { const row = []; for (let c = 1; c <= 4; c++) row.push(D.get(r, c)); if (row.some(x => x !== '')) flat.push(row.slice(0, 3)); }
 const findRow = label => flat.find(f => String(f[0]) === label);
@@ -245,7 +245,7 @@ truthy('chase produces reminder text', uiCalls.some(c => c[0] === 'modal' && /Re
 
 console.log('\n=== edge: empty sheet ===');
 SpreadsheetApp._book = new Book({ Clients: new Sheet('C'), Invoices: new Sheet('Invoices'), Settings: new Sheet('S'), Payments: new Sheet('P') });
-SpreadsheetApp._book.sheets.Invoices.getRange(1, 1, 1, 13).setValues([['h1','h2','h3','h4','h5','h6','h7','h8','h9','h10','h11','h12','h13']]);
+SpreadsheetApp._book.sheets.Invoices.getRange(1, 1, 1, 13).setValues([Array.from({length: 13}, (_, i) => 'h' + (i + 1))]);
 let threw = null;
 try { api.refreshSummary(); } catch (e) { threw = String(e.message || e); }
 truthy('refreshSummary survives empty sheet', threw === null, threw);

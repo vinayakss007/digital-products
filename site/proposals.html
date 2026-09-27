@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposals &amp; Quotes Kit — Priced PDFs from Google Sheets | LeadStack</title>
+  <meta name="description" content="Turn a scope into a priced, dated proposal PDF with the deposit calculated, chase what is about to expire, and convert the accepted one into an invoice. No proposal software subscription.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Lead<span>Stack</span></a>
+      <div class="nav-links"><a href="index.html#products">All products</a><a href="index.html#bundle">Bundle</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="index.html">Products</a> / Proposals &amp; Quotes Kit</div>
+      <div class="hero-badge">📄 Proposals inside Google Sheets</div>
+      <h1>You don't lose deals on price.<br><em>You lose them in the gap after "send me something".</em></h1>
+      <p>Type the scope once. You get a priced, dated, deposit-carrying PDF you'd actually put in front of a client — and when they say yes, the same sheet turns it into an invoice draft instead of a blank new document.</p>
+      <div data-price="proposals"></div>
+      <div class="cta-row" style="margin-top:8px"><div data-buy="proposals"></div></div>
+      <div class="assure">Instant download · One-time payment · No proposal-software subscription</div>
+    </div>
+  </header>
+
+  <section class="alt">
+    <div class="container">
+      <h2>From "we discussed it" to "pay the deposit"</h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><div><h4>New Draft Proposal</h4><p>Takes the next number (PROP-001, 002, …), stamps today, and sets the expiry from how long you want your price to hold.</p></div></div>
+        <div class="step"><div class="n">2</div><div><h4>Write the scope plainly</h4><p>One line per item: <code>Website build | 40 | 1500</code>. Quantity and rate are optional — a line of plain text prices at zero so you can list inclusions without maths.</p></div></div>
+        <div class="step"><div class="n">3</div><div><h4>Recalculate Totals</h4><p>Subtotal, tax at your rate, total, and the deposit your Settings percentage produces. Written back to the row.</p></div></div>
+        <div class="step"><div class="n">4</div><div><h4>Email Proposal With PDF</h4><p>Generates the PDF into its own Drive folder, attaches <em>that file</em>, states the total and the deposit, and moves the row to Sent. Confirm dialog first.</p></div></div>
+        <div class="step"><div class="n">5</div><div><h4>Move To Accepted</h4><p>One click from the stage submenu. It stamps the acceptance date, logs the change, and refreshes the dashboard.</p></div></div>
+        <div class="step"><div class="n">6</div><div><h4>Convert To Invoice</h4><p>Creates a numbered draft on the Invoices tab — the deposit only, or the whole scope if you don't take deposits. Nothing to retype.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What the sheet tells you that a folder of PDFs cannot</h2>
+      <div class="two-col">
+        <div class="demo-card"><div class="label">📊 Pipeline dashboard (real output from the sample data)</div>
+<pre>Open Proposals              6
+Open Value          ₹14,35,588
+Weighted Pipeline    ₹5,54,612
+Won Value              ₹5,31,000
+Win Rate                    66.7%
+
+By stage:  Sent 3 · Negotiating 1
+           Accepted 1 · Draft 1 · Won 1
+           Lost 1 · Expired 1</pre></div>
+        <div class="demo-card"><div class="label">📄 A proposal as the client sees it</div>
+<pre>   PROPOSAL PROP-001        Issued  15 Sep 2026
+   Kite Studio              Valid   29 Sep 2026
+
+   Prepared for             Prepared by
+   Northwind Logistics      Kite Studio
+   Plot 14, Sector 62       49 Baner Road, Pune
+   GSTIN 09AABCU1234F1Z5    GSTIN 27AAECK1234F1Z9
+
+Scope                Qty     Rate      Amount
+Inventory dashboard    1  ₹1,65,000  ₹1,65,000
+Revision rounds        2   ₹12,000    ₹24,000
+
+            Subtotal                  ₹1,89,000
+            Tax (18%)                    ₹34,020
+            TOTAL                       ₹2,23,020
+
+  DEPOSIT REQUIRED: ₹89,208 (40%)
+  Balance billed on the first invoice.</pre></div>
+        <div class="demo-card"><div class="label">📧 The 9am email</div>
+<pre>Subject: Proposals: 2 expiring,
+         1 lapsed
+
+EXPIRING WITHIN 3 DAYS
+ • PROP-003 · Delta Structures
+   ₹3,30,400 · 1d left · at Sent
+ • PROP-001 · Northwind Logistics
+   ₹2,23,020 · 2d left · at Sent
+
+LAPSED — RE-PRICE OR CLOSE THEM
+ • PROP-007 · Saffron Coffee Roasters
+   ₹68,440 · lapsed 56d ago · at Sent
+Value sitting in lapsed: ₹68,440
+
+Lapsed proposals rarely come back on
+the old number. Send a fresh one or
+mark them Expired.</pre></div>
+        <div class="demo-card"><div class="label">🧾 The accepted one, turned into money</div>
+<pre>PROMPT:  PROP-004 · Meridian Clinic
+         Accepted · total ₹4,01,200
+         deposit 40%
+
+RESULT:  INV-0001 · Meridian Clinic
+         Due 11 Oct 2026 · ₹1,60,480
+         Tax 0% · Status Draft
+
+Line item as the client reads it:
+"Deposit against PROP-004 (40% of
+ ₹4,01,200.00)"
+
+The tax was already accounted for on
+the proposal total, so the deposit is
+billed gross. No double-taxing.</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <h2>The decisions baked into it</h2>
+      <div class="features">
+        <div class="feature"><div class="icon">⏳</div><h3>Proposals expire on purpose</h3><p>Every document carries a validity date, and a lapsed one is visible as an amount, not a vibe. "Still waiting" is not a pipeline stage.</p></div>
+        <div class="feature"><div class="icon">🧟</div><h3>Win rate excludes zombies</h3><p>A proposal nobody answered is not a "no". Expired rows sit outside the win rate so the number reflects deals you actually competed for.</p></div>
+        <div class="feature"><div class="icon">💰</div><h3>Deposit first, always</h3><p>Calculated on every proposal and printed on the PDF. The convert step bills the deposit by default, so "we're agreed" never becomes unpaid work.</p></div>
+        <div class="feature"><div class="icon">📧</div><h3>Chase without discounting</h3><p>The reminder email offers to move scope, not to drop price — because shrinking the work is usually the honest fix and a discount isn't.</p></div>
+        <div class="feature"><div class="icon">🎯</div><h3>You set the probabilities</h3><p>Win chances live on a tab, not in the code. If Negotiating is 60% for you, change one cell and the pipeline maths follows.</p></div>
+        <div class="feature"><div class="icon">🧩</div><h3>It knows what it isn't</h3><p>No e-signatures, no payment gateway, no legal language. It gets a priced document in front of a client and a yes into your invoice queue.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>What you get</h2>
+      <div class="two-col" style="max-width:720px;margin:0 auto">
+        <div class="demo-card"><div class="label">📦 In the download</div>
+<pre>proposal_script.gs    the whole tool
+proposals_sample.csv  9 proposals covering
+                      every stage, including
+                      an expired zombie
+clients_sample.csv    5 clients, GSTIN included
+README.md             setup, maths, limits
+QUICKSTART.txt        one page, numbered</pre></div>
+        <div class="demo-card"><div class="label">🧠 What it assumes</div>
+<pre>A Google account. Nothing else.
+
+Works alone. If you also install the
+Invoice Kit in the same spreadsheet,
+the convert step feeds it a real draft
+— and neither one overwrites the other's
+dashboard or settings.</pre></div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:14.5px;margin-top:26px">
+        <span data-checks="proposals">195</span> automated checks cover the totals, deposit maths, expiry rules, stage moves, PDF escaping and the shipped sample data end to end.
+      </p>
+    </div>
+  </section>
+
+  <section class="alt buy">
+    <div class="container">
+      <h2>Get the Proposals Kit</h2>
+      <div data-price="proposals"></div>
+      <div data-buy="proposals"></div>
+      <div class="assure">₹349 once. One recovered stalled proposal pays for it twice over.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="index.html">All products</a> · <a href="mailto:hello@leadstack.dev">Pre-sale questions</a></p>
+      <p style="margin-top:8px">© <span data-year>2026</span> LeadStack Templates</p>
+    </div>
+  </footer>
+  <script src="products.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

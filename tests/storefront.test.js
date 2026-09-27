@@ -40,6 +40,12 @@ function render(buyLinks) {
   return slots;
 }
 
+function readProducts() {
+  const w = {};
+  vm.runInContext(SITE('products.js'), vm.createContext({ window: w }));
+  return w;
+}
+
 let pass = 0, fail = 0;
 const t = (name, ok, detail) => {
   if (ok) { pass++; console.log('  ok   ' + name); }
@@ -49,19 +55,28 @@ const t = (name, ok, detail) => {
 console.log('=== unwired store (fresh clone state) ===');
 const a = render();
 const cards = (a['[data-products]'].innerHTML.match(/class="card"/g) || []).length;
-t('catalogue renders one card per product', cards === 3, 'got ' + cards);
+const prodCount = JSON.parse(JSON.stringify({})); // placeholder
+t('catalogue renders one card per product', cards === 4, 'got ' + cards);
 t('bundle is not duplicated in the product grid', !/🧰/.test(a['[data-products]'].innerHTML));
 t('bundle renders in its own slot', /🧰/.test(a['[data-bundle]'].innerHTML));
-const names = ['CRM &amp; Sales Tracker Template', 'Small Business Prompt Pack', 'Invoice &amp; Cash-Flow Kit'];
+const names = ['CRM &amp; Sales Tracker Template', 'Small Business Prompt Pack',
+  'Proposals &amp; Quotes Kit', 'Invoice &amp; Cash-Flow Kit'];
 t('all product names appear, ampersands encoded', names.every(n => a['[data-products]'].innerHTML.includes(n)));
 t('no raw & left in interpolated names', !/<h3>[^<]*&[^a]/.test(a['[data-products]'].innerHTML),
   (a['[data-products]'].innerHTML.match(/<h3>[^<]*<\/h3>/g) || []).join(' '));
-t('detail pages are linked', ['crm.html', 'prompt-pack.html', 'invoice-kit.html'].every(p => a['[data-products]'].innerHTML.includes(p)));
+t('detail pages are linked', ['crm.html', 'prompt-pack.html', 'proposals.html', 'invoice-kit.html'].every(p => a['[data-products]'].innerHTML.includes(p)));
 
 const bundleHtml = a['[data-bundle]'].innerHTML + a['[data-price]'].innerHTML;
-t('bundle shows ₹599 against ₹797', /₹599/.test(bundleHtml) && /₹797/.test(bundleHtml), bundleHtml);
-t('bundle advertises the real saving', /Save ₹198/.test(bundleHtml), bundleHtml);
-t('crm price is ₹299', /₹299/.test(a['[data-price]'].innerHTML || '') || /₹299/.test(a['[data-products]'].innerHTML));
+// Asserted against the config the pages actually render from, so a price change is
+// a one-line edit rather than three failing tests.
+const cfg = readProducts();
+const inr = n => '₹' + n.toLocaleString('en-IN');
+t('bundle shows its price against the sum of parts',
+  bundleHtml.includes(inr(cfg.BUNDLE.price)) && bundleHtml.includes(inr(cfg.BUNDLE.was)), bundleHtml.slice(0, 200));
+t('bundle advertises the real saving',
+  new RegExp('Save ' + inr(cfg.BUNDLE.was - cfg.BUNDLE.price).replace('₹', '₹')).test(bundleHtml), bundleHtml.slice(0, 200));
+cfg.PRODUCTS.forEach(p => t(p.id + ' price ₹' + p.price + ' appears in the catalogue',
+  a['[data-products]'].innerHTML.includes(inr(p.price))));
 
 const unwired = a['[data-buy]'].innerHTML;
 t('unwired buy button is not a dead external link', !/href="https?:/.test(unwired), unwired);
@@ -83,11 +98,9 @@ t('no script tags emitted by the renderer', !/<script/i.test(grid));
 
 // Verify the prices in products.js agree with the numbers used on the landing pages.
 console.log('\n=== listing prices agree with the product pages ===');
-const win2 = {};
-vm.createContext(win2);
-vm.runInContext(SITE('products.js'), vm.createContext({ window: win2 }));
-const sum = win2.PRODUCTS.reduce((s, p) => s + p.price, 0);
-t('individual prices add up to the stated bundle baseline', sum === win2.BUNDLE.was, sum + ' vs ' + win2.BUNDLE.was);
+const win2 = readProducts();
+const parts = win2.PRODUCTS.reduce((s, p) => s + p.price, 0);
+t('individual prices add up to the stated bundle baseline', parts === win2.BUNDLE.was, parts + ' vs ' + win2.BUNDLE.was);
 t('bundle is cheaper than buying separately', win2.BUNDLE.price < win2.BUNDLE.was);
 const ids = new Set(win2.PRODUCTS.map(p => p.id));
 t('every bundle member is a real product', win2.BUNDLE.includes.every(i => ids.has(i)));
@@ -95,6 +108,65 @@ for (const p of win2.PRODUCTS) {
   const page = SITE(p.page);
   t(p.id + ' page exists and loads the shared scripts',
     page.includes('products.js') && page.includes('store.js') && page.includes('styles.css'));
+}
+
+// "N automated checks pass" is the one marketing claim on these pages that can
+// rot silently: the number goes stale the day a suite is added or renamed. The
+// counts come from tests/check-count.json, which run_tests.sh wipes and rewrites
+// from the suites' own output, and tools/sync_check_claims.py stamps those numbers
+// into the pages' <span data-checks="…"> markers before this test runs. So a page
+// that oversells the build — by edit, by drift, or by a suite that stops being
+// measured — fails here instead of shipping.
+console.log('\n=== check-count claims match the measured run ===');
+const countFile = src('tests/check-count.json');
+if (!fs.existsSync(countFile)) {
+  console.error('tests/check-count.json is missing — it is written by ./tests/run_tests.sh,\n' +
+    'which is the only supported way to run this suite. Do not hand-write it.');
+  process.exit(1);
+}
+const COUNTS = JSON.parse(fs.readFileSync(countFile, 'utf8'));
+const catalogue = readProducts();
+const sum = ids => ids.map(id => {
+  if (!(id in COUNTS.suites)) throw new Error('suite not measured this run: ' + id);
+  return COUNTS.suites[id];
+}).reduce((s, n) => s + n, 0);
+
+const want = {};
+for (const [pid, ids] of Object.entries(catalogue.CHECK_SUITES)) {
+  try { want[pid] = sum(ids); } catch (e) { t(pid + ' suites are all measured', false, e.message); }
+}
+try { want.all = sum(catalogue.CHECK_ALL); } catch (e) { t('CHECK_ALL suites are measured', false, e.message); }
+
+const pageIds = new Set(['all']);
+for (const file of fs.readdirSync(src('site')).filter(f => f.endsWith('.html'))) {
+  const html = SITE(file);
+  for (const m of html.matchAll(/data-checks="([a-z]+)">([\d,]+)</g)) {
+    const [, pid, claimed] = m;
+    pageIds.add(pid);
+    const n = Number(claimed.replace(/,/g, ''));
+    t(`${file} claims ${claimed} checks [${pid}]`, pid in want && want[pid] === n,
+      pid in want ? `build measures ${want[pid]}` : 'no count configured for this id');
+  }
+}
+t('every product with a suite has a claim somewhere',
+  Object.keys(catalogue.CHECK_SUITES).every(pid => pageIds.has(pid)),
+  [...Object.keys(catalogue.CHECK_SUITES)].filter(pid => !pageIds.has(pid)).join(', '));
+t('CHECK_ALL covers every suite named in CHECK_SUITES',
+  Object.values(catalogue.CHECK_SUITES).flat().every(s => catalogue.CHECK_ALL.includes(s)));
+// The home page's catalogue-wide number covers product behaviour only, never the
+// storefront meta-suite that is asserting it — otherwise the claim feeds on itself.
+t('the catalogue claim excludes the storefront meta-suite',
+  !catalogue.CHECK_ALL.some(s => /storefront/.test(s)) &&
+  !Object.values(catalogue.CHECK_SUITES).flat().some(s => /storefront/.test(s)));
+
+// store-listings.md is pasted into Gumroad by hand, so it cannot carry a marker to
+// be rewritten — but a stale "195 automated checks" reads just as false there.
+// Every count quoted in it must still be a number some page legitimately claims.
+const listings = fs.readFileSync(src('store-listings.md'), 'utf8');
+const valid = new Set(Object.values(want).map(String));
+for (const m of listings.matchAll(/(\d[\d,]*) automated checks/g)) {
+  t('store-listings quote of ' + m[1] + ' checks is current', valid.has(m[1].replace(/,/g, '')),
+    'measured counts: ' + [...valid].join(', ') + ' — update store-listings.md');
 }
 
 console.log('\n----------------------------------------');

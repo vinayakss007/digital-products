@@ -1,0 +1,16 @@
+Proposal #,Client,Date,Valid Until,Scope (one line per item),Subtotal,Tax %,Tax,Total,Deposit %,Deposit Amount,Status,Sent Date,Accepted Date,Notes
+PROP-001,Northwind Logistics,2026-09-15,2026-09-29,"Inventory dashboard rebuild | 1 | 165000
+Two revision rounds | 2 | 12000",189000,18,34020,223020,40,89208,Sent,,,Sent after the discovery call. Deposit starts the build.
+PROP-002,Saffron Coffee Roasters,2026-09-18,2026-10-02,"Shopify theme build | 1 | 120000
+Product copy, 24 SKUs | 24 | 900",141600,18,25488,167088,30,50126.4,Negotiating,,,They want to drop the copy line. Price is firm; scope can move.
+PROP-003,Delta Structures,2026-09-11,2026-09-28,"Structural audit automation | 1 | 240000
+Support, 30 days | 1 | 40000",280000,18,50400,330400,50,165200,Sent,,,"Expiring tomorrow — needs a chase, not a discount."
+PROP-004,Meridian Clinic,2026-09-07,2026-09-21,"Patient intake portal | 1 | 310000
+Staff training, 2 sessions | 2 | 15000",340000,18,61200,401200,40,160480,Accepted,,,"Verbal yes on call. Deposit invoice raised from this row."
+PROP-005,Kite & Co Studio,2026-08-12,2026-08-26,"Brand site, 6 pages | 1 | 96000
+Analytics setup | 1 | 14000",110000,18,19800,129800,40,51920,Won,,,"Deposit in, balance billed on the closing invoice."
+PROP-006,Northwind Logistics,2026-07-25,2026-08-08,Warehouse mobile app | 1 | 420000,420000,18,75600,495600,40,198240,Lost,,,"Lost to an in-house team. Good scope talk, wrong quarter."
+PROP-007,Saffron Coffee Roasters,2026-07-19,2026-08-02,Wholesale ordering sheet | 1 | 58000,58000,18,10440,68440,40,27376,Sent,,,Went quiet five weeks ago and is still marked Sent. Needs re-pricing.
+PROP-008,Delta Structures,2026-09-27,2026-10-11,"Tender pack generator | 1 | 180000
+Migration of 40 old sheets | 40 | 700",208000,18,37440,245440,40,98176,Draft,,,Draft only — waiting on their drawing-list count.
+PROP-009,Kite & Co Studio,2026-06-20,2026-07-04,"Social template pack | 1 | 22000",22000,18,3960,25960,40,10384,Expired,,,Expired on the sheet and left there as a record.

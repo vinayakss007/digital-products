@@ -1,6 +1,6 @@
 # Store Listings — copy-paste ready for Gumroad / Payhip / Lemon Squeezy
 
-Three products plus a bundle. For each: paste the title into the product name, the short
+Four products plus a bundle. For each: paste the title into the product name, the short
 description into the summary, the full description into the body, then the tags. Attach the
 matching ZIP from `dist/`.
 
@@ -109,7 +109,74 @@ ChatGPT, Claude, Gemini, or any chat tool. No account, plugin or subscription ne
 
 ---
 
-## 3. Invoice & Cash-Flow Kit — `dist/Invoice-CashFlow-Kit.zip`
+## 3. Proposals & Quotes Kit — `dist/Proposals-Quotes-Kit.zip`
+
+**Title (pick one)**
+- Proposals & Quotes Kit for Google Sheets
+- Send a Priced Proposal in 5 Minutes — No SaaS, No eSign Subscription
+- Freelancer Quoting Template with Expiry and Deposit Tracking (Apps Script)
+
+**Short description**
+Write the scope once. Get a numbered PDF that states the deposit and the day the price expires, a morning email listing the proposals that are quietly dying, and a win rate that doesn't count ghosts as losses. An accepted quote becomes a draft invoice in one click.
+
+**Full description**
+
+### The gap this fills
+A CRM tracks leads. An invoice tracks money owed. Almost nobody has a tool for the
+stage in between — where the actual money is decided. You quoted three weeks ago, they
+haven't replied, the price was never written down properly, and you can't tell a dead
+proposal from a slow one.
+
+### What it does
+1. **New Draft Proposal** — next `PROP-` number, today's date, expiry date from your Settings
+2. **Type the scope plainly** — `Website build | 40 | 1500`, one line per item
+3. **Recalculate Totals** — subtotal, tax, total, and the deposit, stated in the document
+4. **Create PDF in Drive** — clean client-facing layout: scope table, validity date, deposit terms, your GSTIN
+5. **Email Proposal With PDF** — the real PDF attached, confirms the address first, moves the row to Sent
+6. **Stage moves from a menu** — Sent → Follow-up → Negotiating → Accepted / Won / Lost, each stamped and logged
+7. **Convert Accepted Proposal To Invoice** — the deposit (or the whole scope) becomes a numbered invoice draft
+8. **Refresh Dashboard** — open value, weighted pipeline, win rate, what's expiring, what's lapsed
+
+**The daily expiry email** lists proposals about to die within three days and the ones
+already past their date while still marked open. On the shipped sample data it finds
+`PROP-003`, `PROP-001` expiring and `PROP-007` — sent 56 days ago, still "Sent" — lapsed.
+Won and Lost rows never appear. Neither does anything already expired; no nagging.
+
+**Win rate that ignores zombies.** Expired proposals are excluded from the denominator,
+because silence is not a "no" — and counting it as one makes your number look like a
+sales problem when it's a follow-up problem. On the sample data: 66.7%.
+
+### Details that matter when you're asking for money
+- **The deposit is in the document**, in words and figures, before you start work
+- **Deposit invoices are billed at 0% tax** — tax was already accounted for on the proposal total; taxing the deposit again would be wrong
+- **Numbering can't collide** — proposal numbers continue from your highest, invoice numbers are allocated by reading existing ones
+- **₹ with Indian digit grouping** (`₹2,23,020.00`), or $ / € / £ in Settings
+- **Client names and scope text are HTML-escaped**, so a client called "R&D <Pvt> Ltd" cannot corrupt your PDF
+- **195 automated checks** on totals, deposit maths, expiry rules, stage moves, escaping, and the shipped sample data run end to end
+
+### Installing it next to the other LeadStack products
+Paste both scripts into one Apps Script project and both menus appear. Settings rows are
+upserted rather than cleared, each product writes its own dashboard tab, and the convert
+step feeds the Invoice Kit a real draft. The three products coexist under test, not by hope.
+
+### Honest limits
+- **No digital signature or contract execution.** "Accepted" is a status you set because they said yes. For a legally signed scope document you need an e-sign tool or a lawyer.
+- **No payment collection.** It calculates and invoices a deposit; UPI/Razorpay/Stripe happens in your payment app.
+- **No compliance claims.** GSTIN and tax % are printed because Indian clients ask for them — that is not the same as a compliant GST invoice.
+- **No CRM.** It starts at "I know who I'm pitching."
+- PDF generation relies on Google's built-in HTML→PDF conversion inside Apps Script. If Google changes it, this is the piece that breaks first.
+
+### What's in the download
+`proposal_script.gs` · `proposals_sample.csv` (9 proposals covering every stage, including a lapsed zombie and an already-expired row) · `clients_sample.csv` (5 clients with GSTINs) · `README.md` · `QUICKSTART.txt`
+
+### Price
+**₹349** one-time. One e-sign or proposal SaaS seat costs more per month.
+
+**Tags:** proposal template, google sheets proposal, freelance quotes, sales proposal, Apps Script, deposit invoice, proposal tracker
+
+---
+
+## 4. Invoice & Cash-Flow Kit — `dist/Invoice-CashFlow-Kit.zip`
 
 **Title (pick one)**
 - Invoice & Cash-Flow Kit for Google Sheets
@@ -147,6 +214,13 @@ A daily 9am email can list what is overdue and what falls due within three days,
 ### Honest limits
 It does not take card payments. There is no payment gateway — you collect by UPI, NEFT or your bank link and mark it paid. It is not a substitute for accounting software or GST filing.
 
+### Installs next to the others
+Paste `invoice_script.gs` and `proposal_script.gs` into the same Apps Script project and
+you get both menus. They share the Clients and Invoices tabs deliberately, each keeps its
+own Settings rows and its own dashboard tab (this one writes **Cash Flow**, the CRM writes
+**Dashboard**, Proposals writes **Proposal Dashboard**), and an accepted proposal lands
+here as a numbered draft.
+
 ### What's in the download
 `invoice_script.gs` · `clients_sample.csv` (5 clients) · `invoices_sample.csv` (8 invoices, one per status so you can see the whole dashboard working immediately) · `README.md` · `QUICKSTART.txt`
 
@@ -157,26 +231,34 @@ It does not take card payments. There is no payment gateway — you collect by U
 
 ---
 
-## 4. Solo Business Starter Bundle — `dist/Solo-Business-Starter-Bundle.zip`
+## 5. Solo Business Starter Bundle — `dist/Solo-Business-Starter-Bundle.zip`
 
-**Title:** Solo Business Starter Bundle — CRM, Invoicing & Prompt Pack
+**Title:** Solo Business Starter Bundle — CRM, Proposals, Invoicing & Prompt Pack
 
 **Short description**
-Three tools that cover the whole loop of working for yourself: get the lead, do the work, send the invoice. ₹599 instead of ₹797.
+Four tools that cover the whole loop of working for yourself: get the lead, price the work, win it, bill it. ₹749 instead of ₹1,146.
 
 **Full description**
 
 Every solo business runs the same loop, and most people buy a tool for one stage and ignore the rest.
 
 - **CRM & Sales Tracker Template** — so leads stop going quiet before they say yes
+- **Proposals & Quotes Kit** — so the quote is priced, written down, dated, and turns into an invoice when they say yes
 - **Invoice & Cash-Flow Kit** — so the work you finished actually gets paid for
 - **Small Business Prompt Pack** — for all the writing around the work you keep postponing
 
-Each arrives as its own download and works alone. Together they cost less than two months of one SaaS seat.
+Each arrives as its own download and works alone. The three spreadsheet tools are also
+built to live in **one** Google Sheet: paste all three scripts into the same Apps Script
+project and you get three menus, one shared client list, three dashboards that don't
+overwrite each other, and a lead that goes CRM → proposal → invoice without retyping a
+name. That coexistence is tested, not assumed.
 
-**₹599** one-time · all three products · 30-day refund
+Bought one at a time they total ₹1,146. All four together: **₹749** — less than two months
+of one SaaS seat, paid once.
 
-**Tags:** business bundle, freelancer toolkit, small business templates, CRM, invoicing, AI prompts, startup tools
+**₹749** one-time · all four products · 30-day refund
+
+**Tags:** business bundle, freelancer toolkit, small business templates, CRM, invoicing, proposals, AI prompts, startup tools
 
 ---
 
@@ -187,20 +269,22 @@ Each arrives as its own download and works alone. Together they cost less than t
 | Prompt Pack | ₹199 | ₹249 | Cheapest yes. Volume and reviews. |
 | CRM Template | ₹299 | ₹399 | Your existing product, now tested. |
 | Invoice Kit | ₹299 | ₹399 | Same buyer as the CRM, different pain. |
-| Bundle | ₹599 | ₹699 | Anchors the singles; best margin per sale. |
+| Proposals & Quotes Kit | ₹349 | ₹449 | Priced above the singles because it spans two stages and converts into the Invoice Kit. |
+| Bundle | ₹749 | ₹899 | Anchored on ₹1,146 of singles; best margin per sale. |
 
 Suggested sequence:
 1. List the **Prompt Pack** first — lowest friction, fastest feedback and reviews.
 2. List the **Invoice Kit** next. It is the most complete product here and has the clearest before/after story.
 3. Keep the **CRM** live at ₹299 with the ₹399 strike-through.
-4. Add the **bundle** only after all three are selling, so the "₹797 separately" anchor is true.
+4. List **Proposals** once the Invoice Kit has a review or two — its pitch ends inside the Invoice Kit, so buyers of one are the audience for the other.
+5. Add the **bundle** only after all four are selling, so the "₹1,146 separately" anchor is true.
 
 After 10 sales, raise the prompt pack to ₹249. Do not discount below ₹199 — it signals the product is worth less than the effort of buying it.
 
 ## Before you go live
 
-1. `python3 build_products.py --check` — regenerates and verifies all four ZIPs
-2. `./tests/run_tests.sh` — all 196 checks should pass
+1. `./tests/run_tests.sh` — nine suites, all 404 product checks should pass; this also rewrites the "N automated checks" claims on the site from what the suites actually measured
+2. `python3 build_products.py --check` — regenerates and verifies all five ZIPs
 3. Set your real store URLs in `site/products.js` (`BUY_LINKS`) — buy buttons say "not added yet" until you do
 4. Replace `hello@leadstack.dev` in `site/*.html` with an inbox you actually read
 5. Push `site/` — the GitHub Action publishes it to Netlify from `main`

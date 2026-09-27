@@ -10,7 +10,7 @@
  * - Emails the invoice to the client with the PDF attached
  * - Monthly cash-flow summary: invoiced, collected, outstanding, by age bucket
  *
- * Tabs this expects: Clients, Invoices, Payments, Settings
+ * Tabs this expects: Clients, Invoices, Payments, Settings (output on "Cash Flow")
  */
 
 // ─── CONFIGURATION ──────────────────────────────────────────────────────────
@@ -19,6 +19,9 @@ const CFG = {
   invoicesSheet: 'Invoices',
   paymentsSheet: 'Payments',
   settingsSheet: 'Settings',
+  // Separate tab name from the CRM's "Dashboard" so both kits can live in one
+  // spreadsheet without clearing each other's output.
+  dashboardSheet: 'Cash Flow',
   // Column indexes on the Invoices tab, 0-based. Change these if you reorder.
   col: {
     number: 0, client: 1, issueDate: 2, dueDate: 3, items: 4,
@@ -32,24 +35,23 @@ const CFG = {
 function setupKit() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
 
-  ['Clients', 'Invoices', 'Payments', 'Settings'].forEach(name => {
+  [CFG.clientsSheet, CFG.invoicesSheet, CFG.paymentsSheet, CFG.settingsSheet, CFG.dashboardSheet].forEach(name => {
     if (!ss.getSheetByName(name)) ss.insertSheet(name);
   });
 
-  const settings = ss.getSheetByName('Settings');
-  settings.clear();
-  settings.getRange('A1:B1').setValues([['Setting', 'Value']]).setFontWeight('bold');
-  settings.getRange('A2:B10').setValues([
-    ['Your Business Name', 'Your Business'],
-    ['Your Address', 'Street, City, State, PIN'],
-    ['Your Email', Session.getActiveUser().getEmail()],
-    ['Your Phone', '+91-XXXXXXXXXX'],
-    ['GSTIN / Tax ID', ''],
-    ['Default Currency', 'INR'],
-    ['Default Tax Rate (%)', '18'],
-    ['Payment Terms (days)', '14'],
-    ['Invoice Number Prefix', 'INV-']
-  ]);
+  // Upserted rather than cleared: the Proposals and CRM kits add their own
+  // rows to this tab in bundle installs.
+  prKitUpsertSettings_({
+    'Your Business Name': 'Your Business',
+    'Your Address': 'Street, City, State, PIN',
+    'Your Email': Session.getActiveUser().getEmail(),
+    'Your Phone': '+91-XXXXXXXXXX',
+    'GSTIN / Tax ID': '',
+    'Default Currency': 'INR',
+    'Default Tax Rate (%)': '18',
+    'Payment Terms (days)': '14',
+    'Invoice Number Prefix': 'INV-'
+  });
 
   const invoices = ss.getSheetByName('Invoices');
   if (invoices.getLastRow() === 0) {
@@ -78,10 +80,32 @@ function setupKit() {
 }
 
 // ─── HELPERS ────────────────────────────────────────────────────────────────
+function prKitUpsertSettings_(defaults) {
+  let sheet = ss_().getSheetByName(CFG.settingsSheet);
+  if (!sheet) sheet = ss_().insertSheet(CFG.settingsSheet);
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange('A1:B1').setValues([['Setting', 'Value']]).setFontWeight('bold');
+  }
+  const at = {};
+  sheet.getDataRange().getValues().slice(1).forEach((r, i) => {
+    const key = String(r[0]).trim();
+    if (key) at[key] = i + 2;
+  });
+  Object.keys(defaults).forEach(key => {
+    if (at[key]) sheet.getRange(at[key], 2).setValue(defaults[key]);
+    else sheet.appendRow([key, defaults[key]]);
+  });
+}
+
 function getSettings_() {
-  const values = ss_().getSheetByName(CFG.settingsSheet).getRange('A2:B10').getValues();
+  const sheet = ss_().getSheetByName(CFG.settingsSheet);
   const out = {};
-  values.forEach(([k, v]) => { out[String(k).trim()] = v; });
+  if (!sheet || sheet.getLastRow() < 2) return out;
+  // Scan the whole column: in bundle installs other kits append their own rows.
+  sheet.getDataRange().getValues().slice(1).forEach(r => {
+    const key = String(r[0]).trim();
+    if (key) out[key] = r[1];
+  });
   return out;
 }
 
@@ -438,7 +462,7 @@ function refreshSummary() {
   });
 
   const outstanding = buckets.current + buckets.over1 + buckets.over2 + buckets.over3;
-  const dash = ss_().getSheetByName('Dashboard') || ss_().insertSheet('Dashboard');
+  const dash = ss_().getSheetByName(CFG.dashboardSheet) || ss_().insertSheet(CFG.dashboardSheet);
   dash.clear();
 
   let r = 1;
@@ -514,8 +538,10 @@ function chaseEmail() {
 }
 
 // ─── MENU ───────────────────────────────────────────────────────────────────
-function onOpen() {
-  SpreadsheetApp.getUi().createMenu('🧾 Invoice Kit')
+// Builder called by the shared onOpen hook below.
+function invoiceKitMenu_() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('🧾 Invoice Kit')
     .addItem('1. Run Setup (once)', 'setupKit')
     .addSeparator()
     .addItem('2. New Draft Invoice', 'createDraftInvoice')
@@ -526,8 +552,22 @@ function onOpen() {
     .addSeparator()
     .addItem('Refresh Cash-Flow Summary', 'refreshSummary')
     .addItem('Chase Overdue Payments', 'chaseEmail')
+    .addItem('Install Daily Overdue Email', 'installReminderTrigger')
     .addToUi();
 }
+
+// ─── MENU HOOK ──────────────────────────────────────────────────────────────
+// Apps Script keeps only ONE onOpen per project, so this block is identical in
+// every LeadStack script: whichever file loads last wins, and it builds every
+// menu whose builder exists. Install one product or all three — the menus are
+// correct either way.
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  if (typeof crmMenu_ === 'function') crmMenu_(ui);
+  if (typeof invoiceKitMenu_ === 'function') invoiceKitMenu_(ui);
+  if (typeof proposalKitMenu_ === 'function') proposalKitMenu_(ui);
+}
+
 
 // ─── DAILY REMINDER (install from Apps Script triggers) ─────────────────────
 function dailyOverdueCheck() {
